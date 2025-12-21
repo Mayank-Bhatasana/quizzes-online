@@ -1,3 +1,40 @@
-h1 {
-  color: red;
+/* 1. Abstracts and Base (The Foundation) */
+@use "variables";
+@use "reset";
+@use "mixins";
+
+/* 2. Components (Buttons, Cards, Navbar) */
+@use "components/buttons";
+@use "components/forms";
+@use "components/popUpBox";
+
+/* 3. Pages (The Specific Looks) */
+@use "pages/auth";
+@use "pages/dashboard";
+// ... etc
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  /* Use Inter for almost everything for readability */
+  font-family: "Inter", sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-main);
+}
+
+h1,
+h2,
+h3,
+.btn-primary,
+.logo {
+  /* Use Poppins for headings and buttons to give it character */
+  font-family: "Poppins", sans-serif;
 }

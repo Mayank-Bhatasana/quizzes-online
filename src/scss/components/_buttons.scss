@@ -1,0 +1,112 @@
+/* BASE BUTTON STYLE (Shared by all buttons) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* Space between icon and text */
+
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px; /* Slightly rounded corners */
+  border: none;
+  cursor: pointer;
+
+  transition: all 0.2s ease; /* Smooth animation */
+
+  /* The "Tactile" Feel - lifts slightly on hover */
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Pressed effect */
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  /* Disabled State */
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #d1d5db !important; /* Grey */
+    color: #6b7280 !important;
+    pointer-events: none; /* No clicking */
+  }
+}
+
+/* VARIANT 1: Primary (Login, Next, Start) */
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+
+  &:hover {
+    background-color: var(--primary-hover);
+  }
+}
+
+/* VARIANT 2: Secondary / Outline (Cancel, Previous) */
+.btn-secondary {
+  background-color: transparent;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+
+  &:hover {
+    background-color: var(--primary-light);
+  }
+}
+
+/* VARIANT 3: Text Only (Logout, "Need account?") */
+.btn-text {
+  background: none;
+  padding: 0;
+  color: var(--text-muted);
+  font-weight: 500;
+  box-shadow: none !important;
+  transform: none !important;
+
+  &:hover {
+    color: var(--primary);
+    text-decoration: underline;
+  }
+}
+
+/* SIZE VARIANTS */
+.btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.btn-lg {
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+}
+
+/* FULL WIDTH (Good for Mobile/Auth forms) */
+.full-width {
+  width: 100%;
+  display: flex;
+}
+
+/* OPTIONAL: The "Pulse" Animation for the START QUIZ button */
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(79, 70, 229, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+  }
+}
+
+.btn-glow {
+  animation: pulse-glow 2s infinite;
+}

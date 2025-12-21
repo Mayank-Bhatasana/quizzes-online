@@ -1,0 +1,88 @@
+/* WRAPPER: Keeps label and input grouped nicely */
+.input-group {
+  margin-bottom: 1.25rem; /* Space between fields */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Space between label and input */
+}
+
+/* LABELS: Clear and legible */
+label {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-main);
+  margin-left: 2px; /* Slight offset to align with input curve */
+}
+
+/* INPUTS: The main event */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="file"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+
+  font-family: "Inter", sans-serif; /* Inter is better for reading text input */
+  font-size: 1rem;
+  color: var(--text-main);
+  background-color: var(--bg-card);
+
+  border: 1.5px solid #d1d5db; /* Neutral grey border */
+  border-radius: 8px; /* Matches your buttons */
+
+  outline: none; /* We replace the default ugly browser outline below */
+  transition: all 0.3s ease-in-out;
+  box-sizing: border-box; /* Prevents padding from breaking width */
+
+  /* PLACEHOLDER TEXT */
+  &::placeholder {
+    color: #9ca3af;
+    font-size: 0.95rem;
+  }
+
+  /* HOVER STATE: Subtle helper */
+  &:hover {
+    border-color: #9ca3af;
+  }
+
+  /* FOCUS STATE: The "Indigo Ring" effect */
+  &:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-light); /* Soft glow ring */
+  }
+
+  /* ERROR STATE: For when validation fails */
+  &.error {
+    border-color: var(--error);
+    &:focus {
+      box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2); /* Red glow */
+    }
+  }
+}
+
+/* FILE INPUT (For the Profile Picture) */
+input[type="file"] {
+  background-color: #f9fafb;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+
+  &::file-selector-button {
+    margin-right: 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary-light);
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  &::file-selector-button:hover {
+    background-color: #c7d2fe;
+  }
+}

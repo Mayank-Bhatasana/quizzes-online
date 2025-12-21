@@ -1,0 +1,17 @@
+:root {
+  /* PRIMARY: Indigo (Modern, Focus-oriented) */
+  --primary: #4f46e5; /* Main buttons, active states */
+  --primary-hover: #4338ca; /* Hover state */
+  --primary-light: #e0e7ff; /* Backgrounds for badges/icons */
+
+  /* NEUTRALS: Easy on the eyes for reading questions */
+  --bg-body: #f3f4f6; /* Light gray background (better than harsh white) */
+  --bg-card: #ffffff; /* White cards */
+  --text-main: #111827; /* Almost black (softer than #000) */
+  --text-muted: #6b7280; /* For subtitles/hints */
+
+  /* FEEDBACK: Quiz results */
+  --success: #10b981; /* Correct Answer */
+  --error: #ef4444; /* Wrong Answer */
+  --warning: #f59e0b; /* Time running out */
+}

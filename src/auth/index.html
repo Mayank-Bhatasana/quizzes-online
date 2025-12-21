@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Login Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="auth__main">
+      <div class="auth__main__container">
+        <div class="auth__main--left">
+          <video autoplay muted class="auth__main--left--video">
+            <source src="../assets/video/form-video.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="auth__main--right">
+          <div class="button--container">
+            <button type="button" id="login-btn" class="btn-secondary">
+              login
+            </button>
+            <button type="button" id="register-btn" class="btn-primary">
+              register
+            </button>
+          </div>
+          <form id="reg__form" class="auth__main--right--form">
+            <div class="auth__main--right--form--container">
+              <div class="reg-email">
+                <label for="reg-email" class="reg-email--label">Email</label>
+                <input type="email" name="reg-email" id="reg-email" />
+              </div>
+
+              <div class="reg-password">
+                <label for="reg-password" class="reg-password--label"
+                  >Password</label
+                >
+                <input type="password" name="reg-password" id="reg-password" />
+              </div>
+
+              <div class="reg-username">
+                <div class="label-wrapper">
+                  <label for="reg-username" class="reg-username--label"
+                    >Username</label
+                  >
+                  <span id="username-status" class="status-text"></span>
+                </div>
+
+                <div class="input-with-button">
+                  <input
+                    type="text"
+                    name="username"
+                    id="reg-username"
+                    placeholder="cool_student"
+                  />
+                  <button type="button" id="check-user-btn" class="btn-check">
+                    Check
+                  </button>
+                </div>
+              </div>
+
+              <input
+                type="submit"
+                value="Submit"
+                class="btn btn-primary signin"
+              />
+            </div>
+          </form>
+          <form id="login__form" class="auth__main--right--form">
+            <div class="auth__main--right--form--container">
+              <div class="login-email">
+                <label for="login-email" class="login-email--label"
+                  >Email</label
+                >
+                <input type="email" name="login-email" id="login-email" />
+              </div>
+
+              <div class="login-password">
+                <label for="login-password" class="login-password--label"
+                  >Password</label
+                >
+                <input
+                  type="password"
+                  name="login-password"
+                  id="login-password"
+                />
+              </div>
+              <input
+                type="submit"
+                value="Submit"
+                class="btn btn-primary login"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="auth.ts" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,147 @@
+/* 1. The Full Screen Background */
+.auth__main {
+  background-color: var(--bg-body);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+
+  &__container {
+    background-color: var(--bg-card);
+
+    display: flex;
+    width: 100%;
+    max-width: 900px;
+
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); /* Nice 3D lift */
+    overflow: hidden;
+  }
+
+  //The left side of the container
+  &--left {
+    background-color: black; /* Fallback if video fails */
+    flex: 2;
+
+    &--video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  //The right side of the card
+  &--right {
+    flex: 1;
+    width: 50%;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    & .button--container {
+      display: flex;
+      background-color: var(--primary-light);
+      padding: 0.4rem;
+      border-radius: 50px;
+      margin-bottom: 2rem;
+
+      button {
+        flex: 1;
+        padding: 0.7rem 0;
+
+        border: none;
+        background: transparent;
+        border-radius: 50px;
+
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+          color: var(--primary);
+        }
+
+        &.active {
+          background-color: #ffffff;
+          color: var(--primary);
+          box-shadow:
+            0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+      }
+    }
+
+    &--form {
+      &--container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+      }
+    }
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+/* Mobile Responsiveness (Stack them on small screens) */
+@media (max-width: 768px) {
+  .auth__main__container {
+    flex-direction: column;
+  }
+  .auth__main--left,
+  .auth__main--right {
+    width: 100%;
+  }
+  .auth__main--left {
+    height: 200px; /* Restrict video height on mobile */
+  }
+}
+
+/* Wrapper to put Input and Button in a row */
+.input-with-button {
+  display: flex;
+  gap: 10px; /* Space between input and button */
+
+  input {
+    flex-grow: 1; /* Input takes up all available space */
+  }
+
+  .btn-check {
+    padding: 0 1.2rem;
+    background-color: #e0e7ff; /* Light Indigo */
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+  }
+}
+
+/* Status Text (Available / Taken) */
+.status-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-left: 10px;
+
+  &.success {
+    color: var(--success);
+  } /* Green */
+  &.error {
+    color: var(--error);
+  } /* Red */
+}
