@@ -7,12 +7,14 @@
 @use "components/buttons";
 @use "components/forms";
 @use "components/popUpBox";
+@use "components/navbar";
 
 /* 3. Pages (The Specific Looks) */
 @use "pages/auth";
 @use "pages/dashboard";
-// ... etc
+@use "pages/home";
 
+// ... etc
 * {
   margin: 0;
   padding: 0;
@@ -38,3 +40,8 @@ h3,
   /* Use Poppins for headings and buttons to give it character */
   font-family: "Poppins", sans-serif;
 }
+
+//<link rel="preconnect" href="https://fonts.googleapis.com" />
+//<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap");

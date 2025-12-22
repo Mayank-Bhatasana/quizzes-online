@@ -3,10 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title></title>
+    <title>Home page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   </head>
-  <body>
-    <h1>Hello world</h1>
+  <body class="home__body">
+    <header class="home__header">
+      <nav class="home__header__nav">
+        <div class="logo">
+          <a class="logo__link" href="/">
+            <img src="assets/img/logo.svg" alt="DevQuiz logo" />
+          </a>
+        </div>
+        <div class="home__header__nav__container">
+          <ul class="right__container">
+            <li class="right__container--username">USERNAME</li>
+            <li class="right__container--points">TOTAL_POINTS</li>
+            <li class="right__container--pfp">PFP</li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <main class="hero">
+      <div class="hero__content">
+        <h1 class="hero__content__title">
+          Level up your <span class="text-gradient"> coding skills </span><br />
+          one question at a time.
+        </h1>
+        <h3 class="hero__content__subtitle">
+          Join thousands of developers testing their knowledge in JavaScript,
+          Python, and more. Compete on the leaderboard and earn your badge.
+        </h3>
+      </div>
+    </main>
     <script type="module" src="main.ts"></script>
   </body>
 </html>

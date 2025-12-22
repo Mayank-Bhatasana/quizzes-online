@@ -34,8 +34,6 @@ toggleAuthMode("login");
 loginBtn.addEventListener("click", toggleAuthMode.bind(null, "login"));
 registerBtn.addEventListener("click", toggleAuthMode.bind(null, "register"));
 
-console.log("Form found:", registerForm);
-
 // if the submitted request is for register
 if (registerForm) {
   // 2. Select the Inputs
@@ -144,11 +142,6 @@ if (registerForm) {
       return;
     }
 
-    console.log("Form Submitted!");
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Username:", username);
-
     const signInSubmitBtn = registerForm.querySelector(
       'input[type="submit"].signin',
     ) as HTMLInputElement;
@@ -156,7 +149,7 @@ if (registerForm) {
     signInSubmitBtn.value = "Signing up...";
     signInSubmitBtn.disabled = true;
 
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email: email,
       password: password,
       options: {
@@ -173,7 +166,7 @@ if (registerForm) {
       signInSubmitBtn.disabled = false;
     } else {
       // SUCCESS: User created!
-      console.log("User created:", data);
+
       alert("Account created successfully! Redirecting...");
 
       // Redirect them to the Dashboard (or Home)
@@ -225,7 +218,7 @@ if (loginForm) {
     const originalText = loginSubmitBtn.value;
     loginSubmitBtn.value = "Logging in...";
     loginSubmitBtn.disabled = true;
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     });
@@ -237,8 +230,6 @@ if (loginForm) {
       loginSubmitBtn.value = originalText;
       loginSubmitBtn.disabled = false;
     } else {
-      console.log("Login Successful:", data);
-
       // Supabase automatically saves the "token" in LocalStorage.
       // We just need to move them to the dashboard.
       window.location.href = "/";
