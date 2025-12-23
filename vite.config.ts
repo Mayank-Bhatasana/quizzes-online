@@ -2,9 +2,9 @@ import { resolve } from "path";
 import { defineConfig } from "vite";
 export default defineConfig({
   root: "src", // Tells Vite that index.html is inside src
+  envDir: "../", // <--- FIX 1: Tells Vite to look for .env in the parent folder
   build: {
     // @ts-ignore
-    envDir: "../", // <--- FIX 1: Tells Vite to look for .env in the parent folder
     publicDir: "../public", // <--- FIX 2: Tells Vite where the public assets are
     outDir: "../dist", // Builds to a folder outside of src
     emptyOutDir: true,

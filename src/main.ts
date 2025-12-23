@@ -1,64 +1,58 @@
-// src/main.ts
-import "./scss/main.scss"; // Imports the styles we just wrote
-import { supabase } from "./lib/supabaseClient";
+import { supabase } from "./lib/supabaseClient.ts";
 
-// DOM Elements
-const btnLogin = document.getElementById("btn-login-start");
-const btnDashboard = document.getElementById("btn-dashboard");
-const userStats = document.getElementById("user-stats");
-const guestLink = document.getElementById("guest-link");
-const userNameDisplay = document.getElementById("display-username");
-const userPointsDisplay = document.getElementById("display-points");
+//Select the input
+const userNameDisplay = document.getElementById(
+  "display-username",
+) as HTMLElement;
+const userPointsDisplay = document.getElementById(
+  "display-points",
+) as HTMLElement;
 const userAvatarDisplay = document.querySelector(
-  "#display-avatar img",
+  "#display-avatar",
 ) as HTMLImageElement;
+const getStarted = document.getElementById("get-started") as HTMLButtonElement;
+const loginButton = document.getElementById("log-in") as HTMLButtonElement;
 
-async function initApp() {
-  console.log("Initializing App...");
+// const userStatsContainer = document.getElementById("user-stats"); // The container to show/hide
 
-  // 1. Check Supabase Session
+getStarted.disabled = true;
+
+console.log(userPointsDisplay, userNameDisplay, userAvatarDisplay);
+
+// Try to load the user profile
+const loadUserProfile = async function () {
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (session) {
-    // === LOGGED IN STATE ===
-    console.log("User is logged in:", session.user.email);
-
-    // Toggle Buttons
-    if (btnLogin) btnLogin.classList.add("hidden");
-    if (btnDashboard) btnDashboard.classList.remove("hidden");
-
-    // Toggle Header UI
-    if (guestLink) guestLink.classList.add("hidden");
-    if (userStats) userStats.classList.remove("hidden");
-
-    // Fetch Profile Data (Points & Username)
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("username, total_points, avatar_url")
-      .eq("id", session.user.id)
-      .single();
-
-    if (profile) {
-      if (userNameDisplay)
-        userNameDisplay.textContent = profile.username || "Coder";
-      if (userPointsDisplay)
-        userPointsDisplay.textContent = `${profile.total_points} XP`;
-
-      // If they have a custom avatar, use it. Otherwise, generate a robot based on username.
-      if (profile.avatar_url) {
-        userAvatarDisplay.src = profile.avatar_url;
-      } else {
-        userAvatarDisplay.src = `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile.username}`;
-      }
-    }
-  } else {
-    // === GUEST STATE ===
-    console.log("User is guest");
-    // Default HTML is already in Guest State, so we do nothing.
+  // If the user has not logged in then don't continue
+  if (!user) {
+    console.log("No user logged in.");
+    return;
   }
-}
 
-// Run immediately
-initApp();
+  getStarted.disabled = false;
+  loginButton.classList.add("hidden");
+  // Get the user's name, total points, avatar_url
+  const { data: profile, error } = await supabase
+    .from("profiles")
+    .select("username, total_points, avatar_url")
+    .eq("id", user?.id)
+    .single();
+
+  // If there was an error when return it
+  if (error) {
+    console.log(error);
+    return;
+  }
+  console.log(profile);
+  userNameDisplay.innerHTML = profile.username; //#818cf8
+  userPointsDisplay.innerHTML = `<p style='color: #2e3478'>Total Points <label style="color: var(--success); font-size: 2rem;">${profile.total_points}</label></p>`;
+  userAvatarDisplay.src = profile.avatar_url;
+};
+
+loadUserProfile();
+
+const signOut = async function () {
+  supabase.auth.signOut();
+};

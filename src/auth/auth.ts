@@ -1,5 +1,5 @@
 import { supabase } from "../lib/supabaseClient";
-import "../scss/main.scss";
+// import "../scss/main.scss";
 
 // 1. Select the Form
 const registerForm = document.getElementById("reg__form") as HTMLFormElement;
@@ -13,6 +13,7 @@ const registerBtn = document.getElementById(
 
 function toggleAuthMode(mode: "login" | "register") {
   //reset
+  console.log("Btn", loginBtn, registerBtn, "FOrm", loginForm, registerForm);
   loginBtn?.classList.remove("active");
   registerBtn?.classList.remove("active");
   loginForm?.classList.add("hidden");
