@@ -10,6 +10,11 @@
     display: flex;
     background: var(--primary-light);
     justify-content: space-between;
+    margin: 1rem 10rem;
+
+    @media (max-width: 768px) {
+      margin: 0;
+    }
 
     .logo {
       & > a > img {

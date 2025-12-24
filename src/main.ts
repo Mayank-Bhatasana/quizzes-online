@@ -21,6 +21,9 @@ userPointsDisplay.innerText = "Loading...";
 userAvatarDisplay.innerText = "Loading...";
 
 console.log(userPointsDisplay, userNameDisplay, userAvatarDisplay);
+getStarted.addEventListener("click", () => {
+  window.location.href = "./dashboard/.";
+});
 
 // Try to load the user profile
 const loadUserProfile = async function () {
