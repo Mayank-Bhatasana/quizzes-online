@@ -1,0 +1,11 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="bracket_grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    <path d="M30 20 C 15 20, 10 35, 10 45 L 10 45 C 10 55, 5 60, 5 60 C 5 60, 10 65, 10 75 L 10 75 C 10 85, 15 100, 30 100" stroke="url(#bracket_grad)" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M70 20 C 85 20, 90 35, 90 45 L 90 45 C 90 55, 95 60, 95 60 C 95 60, 90 65, 90 75 L 90 75 C 90 85, 85 100, 70 100" stroke="url(#bracket_grad)" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <text x="50" y="75" font-family="Arial, sans-serif" font-size="60" font-weight="bold" fill="#FBBF24" text-anchor="middle">?</text>
+</svg>
