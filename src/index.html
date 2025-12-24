@@ -8,8 +8,29 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="./scss/main.scss" />
   </head>
-  <header id="home__header"></header>
   <body class="home__body">
+    <header id="home__header">
+      <nav class="home__header__nav">
+        <div class="logo">
+          <a class="logo__link" href="/">
+            <img src="assets/img/logo.svg" alt="DevQuiz logo" />
+          </a>
+        </div>
+        <div class="home__header__nav__container">
+          <ul class="right__container">
+            <li id="display-username" class="right__container--username">
+              USERNAME
+            </li>
+            <li id="display-points" class="right__container--points">
+              TOTAL_POINTS
+            </li>
+            <li class="right__container--pfp">
+              <img id="display-avatar" />
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
     <main class="hero">
       <div class="hero__content">
         <h1 class="hero__content__title">
@@ -34,13 +55,6 @@
         </button>
       </div>
     </main>
-    <script>
-      fetch("header.html")
-        .then((res) => res.text())
-        .then((data) => {
-          document.getElementById("home__header").innerHTML = data;
-        });
-    </script>
     <script type="module" src="main.ts"></script>
   </body>
 </html>
