@@ -16,6 +16,9 @@ const loginButton = document.getElementById("log-in") as HTMLButtonElement;
 // const userStatsContainer = document.getElementById("user-stats"); // The container to show/hide
 
 getStarted.disabled = true;
+userNameDisplay.innerText = "Loading...";
+userPointsDisplay.innerText = "Loading...";
+userAvatarDisplay.innerText = "Loading...";
 
 console.log(userPointsDisplay, userNameDisplay, userAvatarDisplay);
 
@@ -28,6 +31,9 @@ const loadUserProfile = async function () {
   // If the user has not logged in then don't continue
   if (!user) {
     console.log("No user logged in.");
+    userNameDisplay.innerText = "";
+    userPointsDisplay.innerText = "";
+    userAvatarDisplay.classList.add("hidden");
     return;
   }
 
@@ -53,6 +59,7 @@ const loadUserProfile = async function () {
 
 loadUserProfile();
 
-const signOut = async function () {
-  supabase.auth.signOut();
-};
+// const signOut = async function () {
+//   supabase.auth.signOut();
+// };
+// signOut();

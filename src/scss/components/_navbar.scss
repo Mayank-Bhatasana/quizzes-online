@@ -1,14 +1,21 @@
 .home__header {
   margin: 3rem 15rem;
 
+  @media (max-width: 768px) {
+    margin: 0;
+    padding: 0;
+  }
+
   &__nav {
     display: flex;
     background: var(--primary-light);
     justify-content: space-between;
 
-    .logo > a > img {
-      height: 6rem;
-      width: 6rem;
+    .logo {
+      & > a > img {
+        height: 6rem;
+        width: 6rem;
+      }
     }
 
     &__container {
@@ -23,6 +30,11 @@
         display: flex;
         flex-direction: row;
         font-size: 2.5rem;
+        align-items: center;
+
+        @media (max-width: 768px) {
+          font-size: 1.5rem;
+        }
         .right__container--pfp img {
           width: 3rem;
           height: 3rem;
