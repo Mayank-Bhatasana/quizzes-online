@@ -154,3 +154,22 @@
   font-size: 1.5rem;
   padding: 1rem;
 }
+.btn--google {
+  padding-top: 1rem;
+  //background-color: white;
+  //color: #374151; /* Dark Grey */
+  background: darken(#4f46e5ff, 25%);
+  color: white;
+  border: 1px solid #d1d5db; /* Light Grey Border */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  margin-bottom: 1rem;
+  font-weight: 500;
+
+  &:hover {
+    border-color: #9ca3af;
+  }
+}

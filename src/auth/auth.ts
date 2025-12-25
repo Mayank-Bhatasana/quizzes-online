@@ -11,6 +11,28 @@ const registerBtn = document.getElementById(
   "register-btn",
 ) as HTMLButtonElement;
 
+const googleBtn = document.getElementById(
+  "google-login-btn",
+) as HTMLButtonElement;
+
+if (googleBtn) {
+  googleBtn.addEventListener("click", async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        // Redirect them to dashboard after they sign in with Google
+        // window.location.origin automatically gets 'localhost:5173' or your Netlify URL
+        redirectTo: window.location.origin + "/dashboard/",
+      },
+    });
+
+    if (error) {
+      console.error("Google login error:", error.message);
+      alert("Could not sign in with Google.");
+    }
+  });
+}
+
 function toggleAuthMode(mode: "login" | "register") {
   //reset
   loginBtn?.classList.remove("active");
@@ -184,8 +206,8 @@ if (registerForm) {
 
       alert("Account created successfully! Redirecting...");
 
-      // Redirect them to the Dashboard (or Home)
-      window.location.href = "/src/";
+      // Redirect them to the Home
+      window.location.href = "/";
     }
   });
 }
