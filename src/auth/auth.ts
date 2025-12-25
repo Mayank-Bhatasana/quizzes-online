@@ -22,7 +22,7 @@ if (googleBtn) {
       options: {
         // Redirect them to dashboard after they sign in with Google
         // window.location.origin automatically gets 'localhost:5173' or your Netlify URL
-        redirectTo: window.location.origin + "/dashboard/",
+        redirectTo: window.location.origin,
       },
     });
 
