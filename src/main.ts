@@ -63,6 +63,13 @@ const loadUserProfile = async function () {
 loadUserProfile();
 
 // const signOut = async function () {
-//   supabase.auth.signOut();
+//   await supabase.auth.signOut();
+//   window.location.reload();
 // };
-// signOut();
+//
+// // function call from the html file
+// const profileBtn = document.querySelector(
+//   ".right__container--pfp",
+// ) as HTMLLIElement;
+//
+// profileBtn.addEventListener("click", signOut);
