@@ -145,3 +145,12 @@
     color: var(--error);
   } /* Red */
 }
+
+.reg-error,
+.login-error {
+  border: 1px solid var(--error);
+  color: darken(#cf4242ff, 10%);
+  background: lighten(#cf4242ff, 30%);
+  font-size: 1.5rem;
+  padding: 1rem;
+}

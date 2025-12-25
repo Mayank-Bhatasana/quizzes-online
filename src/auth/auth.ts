@@ -13,7 +13,6 @@ const registerBtn = document.getElementById(
 
 function toggleAuthMode(mode: "login" | "register") {
   //reset
-  console.log("Btn", loginBtn, registerBtn, "FOrm", loginForm, registerForm);
   loginBtn?.classList.remove("active");
   registerBtn?.classList.remove("active");
   loginForm?.classList.add("hidden");
@@ -55,6 +54,9 @@ if (registerForm) {
   const usernameStatus = document.getElementById(
     "username-status",
   ) as HTMLElement;
+
+  // select the id to show the error
+  const regError = document.getElementById("reg-error") as HTMLElement;
 
   // check if the username is available or not
   if (checkUserBtn) {
@@ -160,8 +162,20 @@ if (registerForm) {
       },
     });
     if (error) {
-      alert(`Error: ${error.message}`);
+      if (
+        error.message === "Username already exists" ||
+        error.message === "Password should be at least 6 characters."
+      ) {
+        regError.classList.remove("hidden");
+        regError.innerText = error.message;
+      }
 
+      if (error.message === "Database error saving new user") {
+        regError.classList.remove("hidden");
+        regError.innerText = "The username already exists!";
+      }
+
+      console.log(error);
       // Reset button so they can try again
       signInSubmitBtn.value = originalText;
       signInSubmitBtn.disabled = false;
@@ -202,6 +216,8 @@ if (loginForm) {
       ".login-password--label",
     ) as HTMLElement;
 
+    const loginError = document.getElementById("login-error") as HTMLElement;
+
     emailLabel.innerHTML = `Email`;
     passwordLabel.innerHTML = `Password`;
 
@@ -225,7 +241,8 @@ if (loginForm) {
     });
 
     if (error) {
-      console.error(error);
+      loginError.classList.remove("hidden");
+      loginError.innerText = "Invalid email address or password";
 
       // reset the button
       loginSubmitBtn.value = originalText;
