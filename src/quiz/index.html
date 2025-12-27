@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz – One Question at a Time</title>
+    <link rel="stylesheet" href="../scss/main.scss" />
+  </head>
+  <body class="quiz-body">
+    <div class="card">
+      <div class="header">
+        <div class="pill">Question: 1 / 20</div>
+        <div class="pill timer" id="timerPill">
+          ⏳ <span id="timerValue">--</span>s
+        </div>
+      </div>
+
+      <div class="progress">
+        <div class="progress__bar" id="progressBar"></div>
+      </div>
+
+      <div id="quizContainer"></div>
+    </div>
+
+    <script type="module" src="./quiz.ts"></script>
+  </body>
+</html>

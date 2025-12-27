@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Select Difficulty</title>
+    <link rel="stylesheet" href="../scss/main.scss" />
+  </head>
+  <body class="difficulty-page">
+    <header id="home__header">
+      <nav class="home__header__nav">
+        <div class="logo">
+          <a class="logo__link" href="/">
+            <img src="../assets/img/logo.svg" alt="DevQuiz logo" />
+          </a>
+        </div>
+        <div class="home__header__nav__container">
+          <ul class="right__container">
+            <li id="display-username" class="right__container--username">
+              USERNAME
+            </li>
+            <li id="display-points" class="right__container--points">
+              TOTAL_POINTS
+            </li>
+            <li class="right__container--pfp">
+              <img id="display-avatar" />
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main class="difficulty">
+      <header class="difficulty__header">
+        <h1 id="subject-name">Loading Subject...</h1>
+        <p>Choose your challenge level</p>
+      </header>
+
+      <section class="difficulty__container"></section>
+    </main>
+
+    <script type="module" src="./difficulty.ts"></script>
+  </body>
+</html>

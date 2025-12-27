@@ -20,7 +20,6 @@ userNameDisplay.innerText = "Loading...";
 userPointsDisplay.innerText = "Loading...";
 userAvatarDisplay.innerText = "Loading...";
 
-console.log(userPointsDisplay, userNameDisplay, userAvatarDisplay);
 getStarted.addEventListener("click", () => {
   window.location.href = "./dashboard/.";
 });
@@ -33,7 +32,6 @@ const loadUserProfile = async function () {
 
   // If the user has not logged in then don't continue
   if (!user) {
-    console.log("No user logged in.");
     userNameDisplay.innerText = "";
     userPointsDisplay.innerText = "";
     userAvatarDisplay.classList.add("hidden");
@@ -54,7 +52,6 @@ const loadUserProfile = async function () {
     console.log(error);
     return;
   }
-  console.log(profile);
   userNameDisplay.innerHTML = profile.username; //#818cf8
   userPointsDisplay.innerHTML = `<p style='color: #2e3478'>Total Points <label style="color: var(--success); font-size: 2rem;">${profile.total_points}</label></p>`;
   userAvatarDisplay.src = profile.avatar_url;

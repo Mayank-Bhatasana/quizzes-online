@@ -10,6 +10,9 @@ const userPointsDisplay = document.getElementById(
 const userAvatarDisplay = document.querySelector(
   "#display-avatar",
 ) as HTMLImageElement;
+const subjectContainer = document.querySelector(
+  ".dashboard__main__container",
+) as HTMLElement;
 
 // const userStatsContainer = document.getElementById("user-stats"); // The container to show/hide
 
@@ -25,7 +28,6 @@ const loadUserProfile = async function () {
 
   // If the user has not logged in then don't continue
   if (!user) {
-    console.log("No user logged in.");
     userNameDisplay.innerText = "";
     userPointsDisplay.innerText = "";
     userAvatarDisplay.classList.add("hidden");
@@ -47,10 +49,55 @@ const loadUserProfile = async function () {
     console.log(error);
     return;
   }
-
   userNameDisplay.innerHTML = profile.username; //#818cf8
   userPointsDisplay.innerHTML = `<p style='color: #2e3478'>Total Points <label style="color: var(--success); font-size: 2rem;">${profile.total_points}</label></p>`;
   userAvatarDisplay.src = profile.avatar_url;
+
+  const { data: subjects, error: subError } = await supabase
+    .from("subjects")
+    .select("*");
+
+  if (subError) {
+    console.error(subError);
+    return;
+  }
+
+  const htmlOfSubjects = subjects
+    .map(
+      (subject) =>
+        `
+    <div class="dashboard__main__container--card" data-id="${subject.id}">
+        <img
+          src="${subject.image_url}"
+          alt="logo"
+          class="dashboard__main__container--card--logo"
+        />
+        <h3 class="dashboard__main__container--card--name">${subject.name}</h3>
+        <span class="dashboard__main__container--card--discription">
+            ${subject.description}
+        </span>
+    </div>
+    `,
+    )
+    .join("");
+
+  subjectContainer.innerHTML = htmlOfSubjects;
+
+  const subjectIdCon = document.querySelector(
+    ".dashboard__main__container",
+  ) as HTMLElement;
+
+  subjectIdCon.addEventListener("click", (e) => {
+    if (e.target instanceof Element) {
+      const card = e.target.closest(".dashboard__main__container--card");
+      if (card) {
+        const id = (card as HTMLElement).dataset.id;
+
+        // Navigate to the difficulty page with the subject ID as a query parameter
+        window.location.href = `/difficulty/?id=${id}`;
+      }
+    }
+  });
 };
 
 loadUserProfile();

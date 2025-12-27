@@ -1,0 +1,63 @@
+$card-min-width: 280px;
+$card-max-width: 350px;
+
+.dashboard__main {
+  margin-inline: clamp(1rem, 5vw, 20rem);
+  margin-top: 7rem;
+  padding-bottom: 2rem;
+
+  &__container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 30rem);
+    gap: 3rem;
+    place-items: center;
+    place-content: center;
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(auto-fill, 15rem);
+      gap: 2rem;
+    }
+
+    &--card {
+      cursor: pointer;
+      border: #000 solid 1px;
+      border-radius: 8px;
+      overflow: hidden;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      &--logo {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 3 / 2;
+        object-fit: fill;
+      }
+
+      &--name {
+        padding: 1rem 1rem 0.5rem;
+        margin: 0;
+        font-size: 1.25rem;
+      }
+
+      &--discription {
+        display: block;
+        padding: 0 0 3rem 1rem;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: #555;
+
+        // Optional: limit description lines
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+  }
+}

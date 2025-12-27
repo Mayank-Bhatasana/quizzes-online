@@ -13,9 +13,14 @@
 @use "pages/auth";
 @use "pages/dashboard";
 @use "pages/home";
+@use "pages/difficulty";
+@use "pages/quiz";
+@use "pages/results";
 
 // ... etc
-* {
+*,
+*::after,
+*::before {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
