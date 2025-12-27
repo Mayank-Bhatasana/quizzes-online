@@ -79,7 +79,7 @@
     }
 
     &--login {
-      width: 10rem;
+      width: 14rem;
       border-radius: 8px;
       box-shadow:
         0 0 20px rgba(192, 132, 252, 0.6),
@@ -92,7 +92,7 @@
       &::before {
         content: "👆";
         position: absolute;
-        top: 1rem;
+        top: 3rem;
         left: 50%;
         transform: translateX(-50%);
         font-size: 2rem;
