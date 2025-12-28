@@ -118,7 +118,7 @@ function updateTimerUI() {
 function updateProgress() {
   const pct = (current / questions.length) * 100;
   progressBar.style.width = `${pct}%`;
-  if (headerPill) {
+  if (headerPill && questions.length > current) {
     headerPill.textContent = `Question: ${current + 1} / ${questions.length}`;
   }
 }
@@ -145,10 +145,15 @@ function renderQuestion() {
         .join("")}
     </div>
     <div class="footer">
-      <div></div>
-      <button class="btn-primary" id="nextBtn" disabled>Next</button>
+      <div id="cum">CUM</div>
+      <button class="btn-primary" id="nextBtn" disabled>Next</button> 
     </div>
   `;
+
+  // @ts-ignore
+  document
+    .getElementById("cum")
+    .addEventListener("click", () => (current = 20));
 
   document.querySelectorAll<HTMLButtonElement>(".option").forEach((btn) => {
     btn.addEventListener("click", () => handleSelect(btn));
@@ -211,7 +216,7 @@ async function showResults() {
         <div class="pill">Quiz Complete! 🎉</div>
         <div class="score">${result.correct_count} / ${result.total_questions}</div>
         <div class="pill">Points Earned: ${result.score}</div>
-        <button class="btn-secondary" id="homeBtn">Home Page</button>
+        <button class="btn-secondary" id="homeBtn" style="display: block;margin: 10px auto;">Home Page</button>
       </div>
     `;
 
