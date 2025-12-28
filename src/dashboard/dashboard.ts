@@ -55,7 +55,8 @@ const loadUserProfile = async function () {
 
   const { data: subjects, error: subError } = await supabase
     .from("subjects")
-    .select("*");
+    .select("*")
+    .order("sort_order");
 
   if (subError) {
     console.error(subError);
