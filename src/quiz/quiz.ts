@@ -145,16 +145,10 @@ function renderQuestion() {
         .join("")}
     </div>
     <div class="footer">
-      <div id="cum">CUM</div>
+      <div></div>
       <button class="btn-primary" id="nextBtn" disabled>Next</button> 
     </div>
   `;
-
-  // @ts-ignore
-  document
-    .getElementById("cum")
-    .addEventListener("click", () => (current = 20));
-
   document.querySelectorAll<HTMLButtonElement>(".option").forEach((btn) => {
     btn.addEventListener("click", () => handleSelect(btn));
   });
