@@ -33,7 +33,7 @@ const QuestionTime = async function () {
   const { data } = await supabase
     .from("difficulties")
     .select("time_limit_seconds")
-    .eq("id", 2);
+    .eq("id", quizDifficultyId);
   // @ts-ignore
   return data[0].time_limit_seconds;
 };
