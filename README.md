@@ -1,9 +1,36 @@
-   ____        _                       ____        _ _            
-  / __ \      (_)                     / __ \      | (_)           
- | |  | |_   _ _ _________ ___  ___  | |  | |_ __ | |_ _ __   ___ 
- | |  | | | | | |_  /_  / / _ \/ __| | |  | | '_ \| | | '_ \ / _ \
- | |__| | |_| | |/ / / /|  __/\__ \ | |__| | | | | | | | | |  __/
-  \___\_\\__,_|_/___/___|\___||___/  \____/|_| |_|_|_|_| |_|\___|
+<div id="top">
+
+<!-- HEADER STYLE: CONSOLE -->
+<div align="center">
+
+```console
+ ████  ██  ██ ██████ ██████ ██████ ██████  ████          ████  ██   ██ ██     ██████ ██   ██ ██████ 
+██  ██ ██  ██   ██      ██     ██  ██     ██            ██  ██ ███  ██ ██       ██   ███  ██ ██     
+██  ██ ██  ██   ██     ██     ██   ████    ████  ██████ ██  ██ ██ █ ██ ██       ██   ██ █ ██ ████   
+██ ███ ██  ██   ██    ██     ██    ██         ██        ██  ██ ██  ███ ██       ██   ██  ███ ██     
+ ██ ██  ████  ██████ ██████ ██████ ██████ █████          ████  ██   ██ ██████ ██████ ██   ██ ██████ 
+
+
+```
+
+</div>
+
+<!-- BADGES -->
+<img src="https://img.shields.io/github/license/Mayank-Bhatasana/quizzes-online?style=flat-square&logo=opensourceinitiative&logoColor=white&color=8a2be2" alt="license">
+<img src="https://img.shields.io/github/last-commit/Mayank-Bhatasana/quizzes-online?style=flat-square&logo=git&logoColor=white&color=8a2be2" alt="last-commit">
+<img src="https://img.shields.io/github/languages/top/Mayank-Bhatasana/quizzes-online?style=flat-square&color=8a2be2" alt="repo-top-language">
+<img src="https://img.shields.io/github/languages/count/Mayank-Bhatasana/quizzes-online?style=flat-square&color=8a2be2" alt="repo-language-count">
+
+<em>Built with the tools and technologies:</em>
+
+<img src="https://img.shields.io/badge/JSON-000000.svg?style=flat-square&logo=JSON&logoColor=white" alt="JSON">
+<img src="https://img.shields.io/badge/npm-CB3837.svg?style=flat-square&logo=npm&logoColor=white" alt="npm">
+<img src="https://img.shields.io/badge/TypeScript-3178C6.svg?style=flat-square&logo=TypeScript&logoColor=white" alt="TypeScript">
+<img src="https://img.shields.io/badge/Vite-646CFF.svg?style=flat-square&logo=Vite&logoColor=white" alt="Vite">
+<img src="https://img.shields.io/badge/Sass-CC6699.svg?style=flat-square&logo=Sass&logoColor=white" alt="Sass">
+
+</div>
+<br>
 
 # Quizzes Online
 
