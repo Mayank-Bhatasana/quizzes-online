@@ -14,6 +14,8 @@ const subjectContainer = document.querySelector(
   ".dashboard__main__container",
 ) as HTMLElement;
 
+// subjectContainer.style.gridTemplateColumns = "repeat(1, 1fr)";
+
 // const userStatsContainer = document.getElementById("user-stats"); // The container to show/hide
 
 userNameDisplay.innerText = "Loading...";

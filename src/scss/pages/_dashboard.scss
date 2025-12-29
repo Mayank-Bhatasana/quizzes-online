@@ -7,15 +7,18 @@ $card-max-width: 350px;
   padding-bottom: 2rem;
 
   &__container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 30rem);
-    gap: 3rem;
-    place-items: center;
-    place-content: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20rem;
 
     @media (max-width: 768px) {
+      display: grid;
       grid-template-columns: repeat(auto-fill, 15rem);
       gap: 2rem;
+      place-content: center;
+      place-items: center;
     }
 
     &--card {

@@ -203,6 +203,9 @@ async function showResults() {
   container.innerHTML = `<div class="result"><div class="pill">Submitting...</div></div>`;
 
   try {
+    timerValue.textContent = String(0);
+    timerPill.classList.add("warning");
+
     const result = await sendAnswersToServer(answers);
 
     container.innerHTML = `
