@@ -14,6 +14,50 @@ const subjectContainer = document.querySelector(
   ".dashboard__main__container",
 ) as HTMLElement;
 
+const pfp = document.querySelector(
+  ".right__container--pfp img",
+) as HTMLImageElement;
+const dropdownContainer = document.getElementById(
+  "dropdown__container",
+) as HTMLElement;
+
+// 1. Toggle visibility of the dropdown
+const toggleDropdown = function (e: Event) {
+  e.stopPropagation(); // Prevents the click from bubbling up to the window
+  dropdownContainer.classList.toggle("hidden");
+};
+
+// 2. Handle clicks inside the dropdown (Event Delegation)
+const handleDropdownClick = function (e: Event) {
+  const target = e.target as HTMLElement;
+  const listItem = target.closest(".dropdown__container--list");
+
+  if (listItem) {
+    console.log("Selected item:", listItem);
+    // Perform actions based on which item was clicked
+    dropdownContainer.classList.add("hidden"); // Close after selection
+    if (listItem.id === "logout") {
+      const logOutUser = async () => {
+        await supabase.auth.signOut();
+        window.location.reload();
+      };
+      logOutUser();
+    }
+  }
+};
+
+// 3. Close dropdown when clicking anywhere else
+const closeOnOutsideClick = function (e: Event) {
+  if (!dropdownContainer.contains(e.target as Node) && e.target !== pfp) {
+    dropdownContainer.classList.add("hidden");
+  }
+};
+
+// Event Listeners
+pfp?.addEventListener("click", toggleDropdown);
+dropdownContainer?.addEventListener("click", handleDropdownClick);
+window.addEventListener("click", closeOnOutsideClick);
+
 // subjectContainer.style.gridTemplateColumns = "repeat(1, 1fr)";
 
 // const userStatsContainer = document.getElementById("user-stats"); // The container to show/hide

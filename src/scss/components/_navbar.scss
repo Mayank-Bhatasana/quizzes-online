@@ -40,10 +40,102 @@
         @media (max-width: 768px) {
           font-size: 1.5rem;
         }
-        .right__container--pfp img {
-          width: 3rem;
-          height: 3rem;
+        .right__container--pfp {
+          & img {
+            width: 3rem;
+            height: 3rem;
+          }
+          &--dropdown {
+            position: absolute;
+            right: 5px;
+            z-index: 2;
+          }
         }
+      }
+    }
+  }
+}
+
+.dropdown__container {
+  list-style: none;
+  background-color: rgb(255, 255, 255);
+  margin-right: 30px;
+  border: #10b981 solid 1px;
+  border-radius: 30px;
+  padding: 1.5rem;
+
+  &--list {
+    width: 160px;
+    display: flex;
+    height: 30px;
+    align-items: center;
+    animation-name: fromRightToLeft;
+    $sec: 1;
+
+    &:not(:last-child) {
+      border-bottom: 2.5px solid rgba(129, 140, 248, 0.5);
+    }
+
+    &:last-child {
+      font-size: 2rem;
+      text-decoration: none;
+      color: red;
+      cursor: pointer;
+    }
+
+    &:hover {
+      transform: translateY(-0.2rem);
+    }
+
+    @for $i from 1 through 4 {
+      &:nth-child(#{$i}) {
+        animation-duration: ($sec + ($i/3)) + s;
+      }
+    }
+
+    @keyframes fromRightToLeft {
+      from {
+        transform: translateX(5rem);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    & a {
+      font-size: 2rem;
+      text-decoration: none;
+    }
+  }
+  @media (max-width: 768px) {
+    list-style: none;
+    background-color: rgb(255, 255, 255);
+    margin-right: -10px;
+    border: #10b981 solid 1px;
+    border-radius: 10px;
+    padding: 0.1rem;
+    $sec: 1;
+
+    &:hover {
+      transform: translateY(-0.2rem);
+    }
+
+    @for $i from 1 through 4 {
+      &:nth-child(#{$i}) {
+        animation-duration: ($sec + ($i/3)) + s;
+      }
+    }
+
+    @keyframes fromRightToLeft {
+      from {
+        transform: translatey(-1rem);
+        opacity: 0;
+      }
+      to {
+        transform: translatey(0);
+        opacity: 1;
       }
     }
   }
