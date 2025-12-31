@@ -96,7 +96,7 @@ const loadUserProfile = async function () {
     return;
   }
   userNameDisplay.innerHTML = profile.username; //#818cf8
-  userPointsDisplay.innerHTML = `<p style='color: #2e3478'>Total Points <label style="color: var(--success); font-size: 2rem;">${profile.total_points}</label></p>`;
+  userPointsDisplay.innerHTML = `<p style='color: #2e3478'>Total Points: <label class="right__container--point" ">${profile.total_points}</label></p>`;
   userAvatarDisplay.src = profile.avatar_url;
 };
 

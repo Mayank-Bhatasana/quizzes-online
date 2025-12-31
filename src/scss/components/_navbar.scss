@@ -1,17 +1,16 @@
 .home__header {
-  margin: 3rem 15rem;
-
   @media (max-width: 768px) {
     margin: 0;
     padding: 0;
   }
-
+  padding: 5px;
+  background-color: white;
   &__nav {
     display: flex;
-    background: var(--primary-light);
+    //background: var(--primary-light);
     justify-content: space-between;
-    margin: 1rem 10rem;
 
+    margin: 0 10rem;
     @media (max-width: 768px) {
       margin: 0;
     }
@@ -37,9 +36,25 @@
         font-size: 2.5rem;
         align-items: center;
 
+        .right__container--points {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .right__container--point {
+          color: var(--success);
+          font-size: 2.6rem;
+
+          @media (max-width: 768px) {
+            font-size: 1.5rem;
+          }
+        }
+
         @media (max-width: 768px) {
           font-size: 1.5rem;
+          gap: 1.2rem;
         }
+
         .right__container--pfp {
           & img {
             width: 3rem;
@@ -49,6 +64,10 @@
             position: absolute;
             right: 5px;
             z-index: 2;
+
+            @media (max-width: 768px) {
+              top: 7rem;
+            }
           }
         }
       }
@@ -58,13 +77,14 @@
 
 .dropdown__container {
   list-style: none;
-  background-color: rgb(255, 255, 255);
   margin-right: 30px;
-  border: #10b981 solid 1px;
-  border-radius: 30px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
   padding: 1.5rem;
+  background-color: rgb(255, 255, 255);
 
   &--list {
+    //background-color: rgb(255, 255, 255);
     width: 160px;
     display: flex;
     height: 30px;
@@ -113,8 +133,9 @@
     list-style: none;
     background-color: rgb(255, 255, 255);
     margin-right: -10px;
-    border: #10b981 solid 1px;
-    border-radius: 10px;
+
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
     padding: 0.1rem;
     $sec: 1;
 
