@@ -169,8 +169,9 @@ function handleSelect(btn: HTMLButtonElement) {
   btn.classList.add("selected");
   all.forEach((b) => (b.disabled = true));
 
+  nextQuestion();
   const nextBtn = document.getElementById("nextBtn") as HTMLButtonElement;
-  if (nextBtn) nextBtn.disabled = false;
+  if (nextBtn) nextBtn.disabled = true;
 }
 
 function handleTimeout() {
