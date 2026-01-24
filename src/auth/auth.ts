@@ -245,10 +245,10 @@ if (loginForm) {
 
     if (!email || !password) {
       if (!email) {
-        emailLabel.innerHTML += `<strong style="color: #ef4444;margin: 100%;"> Please enter your email address </strong>`;
+        emailLabel.innerHTML += `<strong style="color: #ef4444;margin:10px"> Please enter your email address </strong>`;
       }
       if (!password) {
-        passwordLabel.innerHTML += `<strong style="color: #ef4444;margin: 100%;"> Please enter your password </strong>`;
+        passwordLabel.innerHTML += `<strong style="color: #ef4444;margin:10px""> Please enter your password </strong>`;
       }
       return;
     }

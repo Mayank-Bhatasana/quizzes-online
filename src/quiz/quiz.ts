@@ -137,7 +137,7 @@ function renderQuestion() {
       ${q.options
         .map(
           (opt) => `
-          <button class="option" data-option-id="${opt.id}">
+          <button class="option ${''}" data-option-id="${opt.id}">
             <span>${opt.text}</span>
           </button>
         `,
@@ -145,7 +145,7 @@ function renderQuestion() {
         .join("")}
     </div>
     <div class="footer">
-      <div></div>
+      <button class='btn-secondary' id='prevBtn'>Previous</button>
       <button class="btn-primary" id="nextBtn" disabled>Next</button> 
     </div>
   `;
@@ -153,6 +153,7 @@ function renderQuestion() {
     btn.addEventListener("click", () => handleSelect(btn));
   });
   document.getElementById("nextBtn")?.addEventListener("click", nextQuestion);
+  document.getElementById("prevBtn")?.addEventListener("click", prevQuestion);
 
   startTimer();
 }
@@ -192,6 +193,13 @@ async function nextQuestion() {
   if (current >= questions.length) {
     await showResults();
   } else {
+    renderQuestion();
+  }
+}
+
+async function prevQuestion() {
+  if (current != 0) {
+    current--;
     renderQuestion();
   }
 }
