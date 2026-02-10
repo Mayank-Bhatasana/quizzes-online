@@ -20,7 +20,6 @@ let questions: Question[] = [];
 let current = 0;
 let timeLeft: number;
 let timerId: number | null = null;
-let locked = false;
 let answers: Array<number | null> = [];
 
 // Quiz Configuration (store these for later submission)
@@ -109,7 +108,7 @@ function stopTimer() {
 function updateTimerUI() {
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
-  timerValue.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  timerValue.textContent = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   timerPill.classList.toggle("warning", timeLeft <= WARNING_TIME);
 }
 
@@ -125,7 +124,6 @@ function updateProgress() {
 function renderQuestion() {
   if (questions.length === 0) return;
 
-  locked = false;
   const q = questions[current];
   updateProgress();
 
@@ -153,7 +151,7 @@ function renderQuestion() {
   document.querySelectorAll<HTMLButtonElement>(".option").forEach((btn) => {
     btn.addEventListener("click", () => handleSelect(btn));
     if (answers[current] === Number(btn.dataset.optionId)) {
-        btn.classList.add("selected");
+      btn.classList.add("selected");
     }
   });
 
@@ -176,25 +174,17 @@ function previousQuestion() {
 }
 
 function handleSelect(btn: HTMLButtonElement) {
-
   const selectedId = Number(btn.dataset.optionId);
 
   answers[current] = selectedId;
 
-
-
   document.querySelectorAll<HTMLButtonElement>(".option").forEach((b) => {
-
     b.classList.remove("selected");
-
   });
 
   btn.classList.add("selected");
 
-
-
   nextQuestion();
-
 }
 
 async function handleTimeout() {
