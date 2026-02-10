@@ -5,3 +5,14 @@ export function shuffleArray<T>(array: T[]): T[] {
   }
   return array;
 }
+
+export function showSpinner() {
+  document.getElementById("spinner-overlay")?.classList.add("active");
+  document.getElementById("spinner")?.classList.add("active");
+}
+
+export function hideSpinner() {
+  document.getElementById("spinner-overlay")?.classList.remove("active");
+  document.getElementById("spinner")?.classList.remove("active");
+}
+

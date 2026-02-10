@@ -1,4 +1,5 @@
 import { supabase } from "../lib/supabaseClient.ts";
+import { showSpinner, hideSpinner } from "../lib/utils.ts";
 
 const urlParams = new URLSearchParams(window.location.search);
 const subjectId = urlParams.get("id");
@@ -27,6 +28,7 @@ userAvatarDisplay.innerText = "Loading...";
 
 // Try to load the user profile
 const loadUserProfile = async function () {
+  showSpinner();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -40,6 +42,7 @@ const loadUserProfile = async function () {
 
     alert("Looks like you aren't logged in.😟\nLet's get you logged in.😃\n");
     window.location.href = window.location.origin + "/auth/.";
+    hideSpinner();
     return;
   }
 
@@ -53,6 +56,7 @@ const loadUserProfile = async function () {
   // If there was an error when return it
   if (error) {
     console.log(error);
+    hideSpinner();
     return;
   }
   userNameDisplay.innerHTML = profile.username; //#818cf8
@@ -115,6 +119,7 @@ const loadUserProfile = async function () {
       window.location.href = `/quiz/?id=${subjectId}&diffId=${diffId}`;
     }
   });
+  hideSpinner();
 };
 
 loadUserProfile();

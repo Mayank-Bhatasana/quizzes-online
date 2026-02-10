@@ -1,4 +1,5 @@
 import { supabase } from "../lib/supabaseClient.ts";
+import { showSpinner, hideSpinner } from "../lib/utils.ts";
 
 // Type Definitions
 type RawApiResponse = {
@@ -29,17 +30,8 @@ const quizSubjectId = urlParams.get("id");
 const quizDifficultyId = urlParams.get("diffId");
 let quizStartTime: number;
 
-const QuestionTime = async function () {
-  const { data } = await supabase
-    .from("difficulties")
-    .select("time_limit_seconds")
-    .eq("id", quizDifficultyId);
-  // @ts-ignore
-  return data[0].time_limit_seconds;
-};
-
-let QUESTION_TIME = await QuestionTime();
-const WARNING_TIME = 5;
+const QUIZ_TOTAL_TIME_SECONDS = 600; // 10 minutes
+const WARNING_TIME = 30; // Warning for the last 30 seconds of the quiz
 
 // DOM Elements
 const container = document.getElementById("quizContainer") as HTMLDivElement;
@@ -72,6 +64,7 @@ function transformQuizData(rawData: RawApiResponse[]): Question[] {
 
 // Initialize Quiz
 async function initQuiz() {
+  showSpinner();
   quizStartTime = Date.now();
 
   const { data, error } = await supabase.rpc("get_quiz_data", {
@@ -82,6 +75,7 @@ async function initQuiz() {
   if (error || !data) {
     container.innerHTML = `<div class="error">Failed to load quiz. Please try again.</div>`;
     console.error(error);
+    hideSpinner();
     return;
   }
 
@@ -89,12 +83,14 @@ async function initQuiz() {
   answers = Array(questions.length).fill(null);
 
   renderQuestion();
+  startTimer(); // Start the overall quiz timer here
+  hideSpinner();
 }
 
 // Timer Functions
 function startTimer() {
   stopTimer();
-  timeLeft = QUESTION_TIME;
+  timeLeft = QUIZ_TOTAL_TIME_SECONDS; // Use total quiz time
   updateTimerUI();
   timerId = window.setInterval(() => {
     timeLeft--;
@@ -111,7 +107,9 @@ function stopTimer() {
 }
 
 function updateTimerUI() {
-  timerValue.textContent = String(timeLeft);
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+  timerValue.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   timerPill.classList.toggle("warning", timeLeft <= WARNING_TIME);
 }
 
@@ -131,61 +129,77 @@ function renderQuestion() {
   const q = questions[current];
   updateProgress();
 
+  const isQuestionAnswered = answers[current] !== null;
+  const isLastQuestion = current === questions.length - 1;
+
   container.innerHTML = `
     <h1>${q.text}</h1>
     <div class="options">
       ${q.options
         .map(
           (opt) => `
-          <button class="option ${''}" data-option-id="${opt.id}">
+          <button class="option" data-option-id="${opt.id}" ${isQuestionAnswered ? "disabled" : ""}>
             <span>${opt.text}</span>
           </button>
         `,
         )
         .join("")}
     </div>
-    <div class="footer">
-      <button class='btn-secondary' id='prevBtn'>Previous</button>
-      <button class="btn-primary" id="nextBtn" disabled>Next</button> 
+    <div class="quiz-navigation">
+      <button class="btn-secondary" id="prevBtn" ${current === 0 ? "disabled" : ""}>Previous</button>
+      <button class="btn-primary" id="nextBtn" ${!isQuestionAnswered ? "disabled" : ""}>${isLastQuestion ? "Submit Quiz" : "Next Question"}</button>
     </div>
   `;
   document.querySelectorAll<HTMLButtonElement>(".option").forEach((btn) => {
     btn.addEventListener("click", () => handleSelect(btn));
+    if (answers[current] === Number(btn.dataset.optionId)) {
+        btn.classList.add("selected");
+    }
   });
-  document.getElementById("nextBtn")?.addEventListener("click", nextQuestion);
-  document.getElementById("prevBtn")?.addEventListener("click", prevQuestion);
 
-  startTimer();
+  const nextBtn = document.getElementById("nextBtn") as HTMLButtonElement;
+  if (nextBtn) {
+    nextBtn.addEventListener("click", nextQuestion);
+  }
+
+  const prevBtn = document.getElementById("prevBtn") as HTMLButtonElement;
+  if (prevBtn) {
+    prevBtn.addEventListener("click", previousQuestion);
+  }
+}
+
+function previousQuestion() {
+  if (current > 0) {
+    current--;
+    renderQuestion();
+  }
 }
 
 function handleSelect(btn: HTMLButtonElement) {
-  if (locked) return;
-  locked = true;
-  stopTimer();
 
   const selectedId = Number(btn.dataset.optionId);
+
   answers[current] = selectedId;
 
-  const all = document.querySelectorAll<HTMLButtonElement>(".option");
+
+
+  document.querySelectorAll<HTMLButtonElement>(".option").forEach((b) => {
+
+    b.classList.remove("selected");
+
+  });
+
   btn.classList.add("selected");
-  all.forEach((b) => (b.disabled = true));
+
+
 
   nextQuestion();
-  const nextBtn = document.getElementById("nextBtn") as HTMLButtonElement;
-  if (nextBtn) nextBtn.disabled = true;
+
 }
 
-function handleTimeout() {
+async function handleTimeout() {
   stopTimer();
-  if (locked) return;
-  locked = true;
-  answers[current] = null; // Unanswered
-
-  document
-    .querySelectorAll<HTMLButtonElement>(".option")
-    .forEach((b) => (b.disabled = true));
-  const nextBtn = document.getElementById("nextBtn") as HTMLButtonElement;
-  if (nextBtn) nextBtn.disabled = false;
+  await showResults(); // End quiz when time runs out
 }
 
 async function nextQuestion() {
@@ -197,19 +211,13 @@ async function nextQuestion() {
   }
 }
 
-async function prevQuestion() {
-  if (current != 0) {
-    current--;
-    renderQuestion();
-  }
-}
-
 async function showResults() {
-  stopTimer();
+  stopTimer(); // Ensure timer stops when results are shown
   updateProgress();
   progressBar.style.width = "100%";
 
   container.innerHTML = `<div class="result"><div class="pill">Submitting...</div></div>`;
+  showSpinner(); // Show spinner during submission
 
   try {
     timerValue.textContent = String(0);
@@ -237,6 +245,8 @@ async function showResults() {
         <p>${err instanceof Error ? err.message : "Unknown error"}</p>
       </div>
     `;
+  } finally {
+    hideSpinner(); // Hide spinner after submission (success or error)
   }
 }
 
