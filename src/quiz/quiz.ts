@@ -15,6 +15,13 @@ type Question = {
   options: { id: number; text: string }[];
 };
 
+type QuizResult = {
+  correct_count: number;
+  total_questions: number;
+  score: number;
+  attempt_id: number;
+};
+
 // State Management
 let questions: Question[] = [];
 let current = 0;
@@ -120,6 +127,32 @@ function updateProgress() {
   }
 }
 
+function formatDuration(totalSeconds: number): string {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  if (minutes === 0) return `${seconds}s`;
+  return `${minutes}m ${seconds.toString().padStart(2, "0")}s`;
+}
+
+function getPerformanceMessage(accuracy: number): string {
+  if (accuracy === 100) return "Perfect score! You nailed every question.";
+  if (accuracy >= 80) return "Excellent work. Your fundamentals look strong.";
+  if (accuracy >= 60) return "Nice effort. You're getting there, keep pushing.";
+  return "Good attempt. Review and come back even stronger.";
+}
+
+function isQuizResult(value: unknown): value is QuizResult {
+  if (!value || typeof value !== "object") return false;
+  const candidate = value as Record<string, unknown>;
+  return (
+    typeof candidate.correct_count === "number" &&
+    typeof candidate.total_questions === "number" &&
+    typeof candidate.score === "number" &&
+    typeof candidate.attempt_id === "number"
+  );
+}
+
 // Render Question
 function renderQuestion() {
   if (questions.length === 0) return;
@@ -206,41 +239,107 @@ async function showResults() {
   updateProgress();
   progressBar.style.width = "100%";
 
-  container.innerHTML = `<div class="result"><div class="pill">Submitting...</div></div>`;
+  container.innerHTML = `
+    <div class="result result--loading">
+      <div class="pill">Submitting your answers...</div>
+    </div>
+  `;
   showSpinner(); // Show spinner during submission
 
   try {
-    timerValue.textContent = String(0);
+    timerValue.textContent = "00:00";
     timerPill.classList.add("warning");
 
     const result = await sendAnswersToServer(answers);
+    const answeredCount = answers.filter((id) => id !== null).length;
+    const completionSeconds = Math.max(
+      0,
+      Math.floor((Date.now() - quizStartTime) / 1000),
+    );
+    const accuracy =
+      result.total_questions > 0
+        ? Math.round((result.correct_count / result.total_questions) * 100)
+        : 0;
+    const performanceMessage = getPerformanceMessage(accuracy);
 
     container.innerHTML = `
-      <div class="result">
-        <div class="pill">Quiz Complete! 🎉</div>
-        <div class="score">${result.correct_count} / ${result.total_questions}</div>
-        <div class="pill">Points Earned: ${result.score}</div>
-        <button class="btn-secondary" id="homeBtn" style="display: block;margin: 10px auto;">Home Page</button>
-      </div>
+      <section class="result-card" style="--result-progress: ${accuracy}%;" aria-live="polite">
+        <div class="result-card__hero">
+          <div class="pill result-pill">Quiz Complete! 🎉</div>
+          <h2>Great job finishing the challenge</h2>
+          <p class="result-card__message">${performanceMessage}</p>
+        </div>
+
+        <div class="score-orb">
+          <div class="score-orb__inner">
+            <div class="score-orb__value">${result.correct_count}<span>/${result.total_questions}</span></div>
+            <div class="score-orb__label">Correct Answers</div>
+          </div>
+        </div>
+
+        <div class="result-stats">
+          <div class="result-stat">
+            <span>Points Earned</span>
+            <strong>${result.score}</strong>
+          </div>
+          <div class="result-stat">
+            <span>Accuracy</span>
+            <strong>${accuracy}%</strong>
+          </div>
+          <div class="result-stat">
+            <span>Answered</span>
+            <strong>${answeredCount} / ${result.total_questions}</strong>
+          </div>
+          <div class="result-stat">
+            <span>Time Taken</span>
+            <strong>${formatDuration(completionSeconds)}</strong>
+          </div>
+        </div>
+
+        <div class="result-actions">
+          <button class="btn-secondary" id="retryBtn">Try Again</button>
+          <button class="btn-primary" id="homeBtn">Home Page</button>
+        </div>
+      </section>
     `;
+
+    document.getElementById("retryBtn")?.addEventListener("click", () => {
+      window.location.reload();
+    });
 
     document.getElementById("homeBtn")?.addEventListener("click", () => {
       window.location.href = window.location.origin;
     });
   } catch (err) {
     console.error("Submission error:", err);
+    const errorMessage = err instanceof Error ? err.message : "Unknown error";
     container.innerHTML = `
-      <div class="result">
-        <div class="pill error">Error submitting quiz</div>
-        <p>${err instanceof Error ? err.message : "Unknown error"}</p>
-      </div>
+      <section class="result-card result-card--error">
+        <div class="result-card__hero">
+          <div class="pill result-pill result-pill--error">Submission failed</div>
+          <h2>We couldn't submit your quiz</h2>
+          <p class="result-card__message">${errorMessage}</p>
+        </div>
+        <div class="result-actions">
+          <button class="btn-secondary" id="retrySubmitBtn">Retry Submit</button>
+          <button class="btn-primary" id="homeBtn">Home Page</button>
+        </div>
+      </section>
     `;
+
+    document.getElementById("retrySubmitBtn")?.addEventListener("click", () => {
+      void showResults();
+    });
+
+    document.getElementById("homeBtn")?.addEventListener("click", () => {
+      window.location.href = window.location.origin;
+    });
   } finally {
     hideSpinner(); // Hide spinner after submission (success or error)
   }
 }
 
-async function sendAnswersToServer(ans: Array<number | null>) {
+async function sendAnswersToServer(ans: Array<number | null>): Promise<QuizResult> {
   // Filter out null/undefined answers
   const validAnswers = ans.filter((id): id is number => id !== null);
 
@@ -259,7 +358,10 @@ async function sendAnswersToServer(ans: Array<number | null>) {
     throw error;
   }
 
-  // data returns: [{ correct_count, total_questions, score, attempt_id }]
+  if (!Array.isArray(data) || data.length === 0 || !isQuizResult(data[0])) {
+    throw new Error("Quiz result payload is invalid.");
+  }
+
   return data[0];
 }
 
