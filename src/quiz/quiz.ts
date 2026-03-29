@@ -214,13 +214,68 @@ async function showResults() {
     timerPill.classList.add("warning");
 
     const result = await sendAnswersToServer(answers);
+    const percentage = Math.round((result.correct_count / result.total_questions) * 100);
+    const timeTaken = Math.floor((Date.now() - quizStartTime) / 1000);
+    const minutes = Math.floor(timeTaken / 60);
+    const seconds = timeTaken % 60;
+
+    // Determine performance level
+    let performanceClass = "poor";
+    let performanceEmoji = "😢";
+    let performanceText = "Keep Practicing!";
+    if (percentage >= 90) {
+      performanceClass = "excellent";
+      performanceEmoji = "🏆";
+      performanceText = "Outstanding!";
+    } else if (percentage >= 70) {
+      performanceClass = "good";
+      performanceEmoji = "🎉";
+      performanceText = "Great Job!";
+    } else if (percentage >= 50) {
+      performanceClass = "average";
+      performanceEmoji = "👍";
+      performanceText = "Good Effort!";
+    }
 
     container.innerHTML = `
-      <div class="result">
-        <div class="pill">Quiz Complete! 🎉</div>
-        <div class="score">${result.correct_count} / ${result.total_questions}</div>
-        <div class="pill">Points Earned: ${result.score}</div>
-        <button class="btn-secondary" id="homeBtn" style="display: block;margin: 10px auto;">Home Page</button>
+      <div class="result ${performanceClass}">
+        <div class="result__confetti"></div>
+        <div class="result__emoji">${performanceEmoji}</div>
+        <h2 class="result__title">${performanceText}</h2>
+        <div class="result__score-ring">
+          <svg viewBox="0 0 120 120">
+            <circle class="result__score-bg" cx="60" cy="60" r="54"/>
+            <circle class="result__score-progress" cx="60" cy="60" r="54" 
+              style="--percentage: ${percentage}"/>
+          </svg>
+          <div class="result__score-value">
+            <span class="result__percentage">${percentage}%</span>
+            <span class="result__fraction">${result.correct_count}/${result.total_questions}</span>
+          </div>
+        </div>
+        <div class="result__stats">
+          <div class="result__stat">
+            <span class="result__stat-icon">⏱️</span>
+            <span class="result__stat-value">${minutes}:${seconds.toString().padStart(2, "0")}</span>
+            <span class="result__stat-label">Time Taken</span>
+          </div>
+          <div class="result__stat">
+            <span class="result__stat-icon">⭐</span>
+            <span class="result__stat-value">${result.score}</span>
+            <span class="result__stat-label">Points Earned</span>
+          </div>
+          <div class="result__stat">
+            <span class="result__stat-icon">✅</span>
+            <span class="result__stat-value">${result.correct_count}</span>
+            <span class="result__stat-label">Correct</span>
+          </div>
+        </div>
+        <button class="btn-primary result__btn" id="homeBtn">
+          <span>Back to Home</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
       </div>
     `;
 

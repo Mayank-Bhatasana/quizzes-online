@@ -201,7 +201,311 @@ button {
 
 .result {
   text-align: center;
-  padding: 20px;
+  padding: 32px 20px;
+  position: relative;
+  overflow: hidden;
+  animation: resultFadeIn 0.5s ease-out;
+
+  &__confetti {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(
+      180deg,
+      rgba(79, 70, 229, 0.08) 0%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+
+  &__emoji {
+    font-size: 64px;
+    margin-bottom: 8px;
+    animation: emojiPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.2s both;
+  }
+
+  &__title {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0 0 24px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent-dark-2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titleSlide 0.5s ease-out 0.3s both;
+  }
+
+  &__score-ring {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto 28px;
+    animation: ringScale 0.6s ease-out 0.4s both;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+  }
+
+  &__score-bg {
+    fill: none;
+    stroke: rgba(79, 70, 229, 0.1);
+    stroke-width: 10;
+  }
+
+  &__score-progress {
+    fill: none;
+    stroke: url(#scoreGradient);
+    stroke: var(--primary);
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 339.292;
+    stroke-dashoffset: calc(339.292 - (339.292 * var(--percentage) / 100));
+    transition: stroke-dashoffset 1s ease-out 0.6s;
+  }
+
+  &__score-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  &__percentage {
+    display: block;
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+  }
+
+  &__fraction {
+    display: block;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  &__stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 28px;
+    animation: statsSlide 0.5s ease-out 0.5s both;
+  }
+
+  &__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 16px;
+    border: 1px solid rgba(79, 70, 229, 0.08);
+    min-width: 90px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.12);
+    }
+  }
+
+  &__stat-icon {
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+
+  &__stat-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1.2;
+  }
+
+  &__stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    font-size: 16px;
+    margin-top: 8px;
+    animation: btnSlide 0.5s ease-out 0.6s both;
+
+    svg {
+      transition: transform 0.2s ease;
+    }
+
+    &:hover svg {
+      transform: translateX(4px);
+    }
+  }
+
+  // Performance-based color themes
+  &.excellent {
+    .result__score-progress {
+      stroke: var(--success);
+    }
+    .result__percentage {
+      color: var(--success);
+    }
+    .result__title {
+      background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+  }
+
+  &.good {
+    .result__score-progress {
+      stroke: var(--primary);
+    }
+  }
+
+  &.average {
+    .result__score-progress {
+      stroke: var(--warning);
+    }
+    .result__percentage {
+      color: var(--warning);
+    }
+    .result__title {
+      background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+  }
+
+  &.poor {
+    .result__score-progress {
+      stroke: var(--error);
+    }
+    .result__percentage {
+      color: var(--error);
+    }
+    .result__title {
+      background: linear-gradient(135deg, var(--error) 0%, #b91c1c 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+  }
+}
+
+@keyframes resultFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes emojiPop {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes titleSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ringScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes statsSlide {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes btnSlide {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive adjustments for result
+@media (max-width: 480px) {
+  .result {
+    padding: 24px 16px;
+
+    &__emoji {
+      font-size: 48px;
+    }
+
+    &__title {
+      font-size: 22px;
+    }
+
+    &__score-ring {
+      width: 130px;
+      height: 130px;
+    }
+
+    &__percentage {
+      font-size: 28px;
+    }
+
+    &__stats {
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    &__stat {
+      padding: 12px 16px;
+      min-width: 80px;
+    }
+
+    &__stat-value {
+      font-size: 18px;
+    }
+  }
 }
 
 .score {
