@@ -1,9 +1,6 @@
+import { initAppHeader } from "../lib/header.ts";
 import { supabase } from "../lib/supabaseClient.ts";
-import type {
-  DifficultyRow,
-  ProfileSummary,
-  SubjectSummary,
-} from "../lib/supabaseTypes.ts";
+import type { DifficultyRow, SubjectSummary } from "../lib/supabaseTypes.ts";
 import { showSpinner, hideSpinner } from "../lib/utils.ts";
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -15,65 +12,15 @@ if (Number.isNaN(subjectId)) {
   window.location.href = "/dashboard/";
 }
 
-//Select the user info htmlTags
-const userNameDisplay = document.getElementById(
-  "display-username",
-) as HTMLElement;
-const userPointsDisplay = document.getElementById(
-  "display-points",
-) as HTMLElement;
-const userAvatarDisplay = document.querySelector(
-  "#display-avatar",
-) as HTMLImageElement;
-
-// const userStatsContainer = document.getElementById("user-stats"); // The container to show/hide
-
-userNameDisplay.innerText = "Loading...";
-userPointsDisplay.innerText = "Loading...";
-userAvatarDisplay.innerText = "Loading...";
-
-// Try to load the user profile
 const loadUserProfile = async function () {
   showSpinner();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { user } = await initAppHeader({ requireAuth: true });
 
   // If the user has not logged in then don't continue
   if (!user) {
-    console.log("No user logged in.");
-    userNameDisplay.innerText = "";
-    userPointsDisplay.innerText = "";
-    userAvatarDisplay.classList.add("hidden");
-
-    alert("Looks like you aren't logged in.😟\nLet's get you logged in.😃\n");
-    window.location.href = window.location.origin + "/auth/.";
     hideSpinner();
     return;
   }
-
-  // Get the user's name, total points, avatar_url
-  const { data: profileData, error } = await supabase
-    .from("profiles")
-    .select("username, total_points, avatar_url")
-    .eq("id", user?.id)
-    .single();
-
-  // If there was an error when return it
-  if (error) {
-    console.log(error);
-    hideSpinner();
-    return;
-  }
-  if (!profileData) {
-    hideSpinner();
-    return;
-  }
-  const profile: ProfileSummary = profileData;
-
-  userNameDisplay.textContent = profile.username ?? "User"; //#818cf8
-  userPointsDisplay.innerHTML = `<p style='color: #2e3478'>Total Points <label style="color: var(--success); font-size: 2rem;">${profile.total_points}</label></p>`;
-  userAvatarDisplay.src = profile.avatar_url ?? "";
 
   // get the subject name
   const subNameTag = document.getElementById("subject-name") as HTMLElement;

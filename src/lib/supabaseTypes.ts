@@ -5,6 +5,7 @@ export type ProfileSummary = Pick<
   ProfileRow,
   "username" | "total_points" | "avatar_url"
 >;
+export type ProfileUpdate = Database["public"]["Tables"]["profiles"]["Update"];
 export type SubjectRow = Database["public"]["Tables"]["subjects"]["Row"];
 export type SubjectSummary = Pick<SubjectRow, "name" | "image_url">;
 export type DifficultyRow = Database["public"]["Tables"]["difficulties"]["Row"];
@@ -27,5 +28,3 @@ type CheckQuizAnswersWithQuizContext = Extract<
 
 export type CheckQuizAnswersResultRow =
   CheckQuizAnswersWithQuizContext["Returns"][number];
-
-export type leaderBoard  = Database['public']['Views']['leaderboard']

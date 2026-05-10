@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="../scss/main.scss" />
+    <link rel="icon" type="image/png" href="../assets/img/logo.svg" />
+  </head>
+  <body class="profile-page">
+    <div id="spinner-overlay" class="spinner-overlay"></div>
+    <div id="spinner" class="spinner"></div>
+
+    <div id="app-header"></div>
+
+    <main class="profile">
+      <section class="profile__card">
+        <header class="profile__header">
+          <h1>My Profile</h1>
+          <p>Manage your public info and account settings</p>
+        </header>
+
+        <p id="profile-message" class="profile__message hidden" role="status"></p>
+
+        <form id="profile-form" class="profile__form">
+          <label class="profile__label" for="profile-email">Email</label>
+          <input id="profile-email" class="profile__input" type="email" readonly />
+
+          <label class="profile__label" for="profile-username">Username</label>
+          <input
+            id="profile-username"
+            class="profile__input"
+            type="text"
+            minlength="3"
+            maxlength="24"
+            required
+          />
+
+          <label class="profile__label" for="profile-avatar">Avatar URL</label>
+          <input id="profile-avatar" class="profile__input" type="url" placeholder="https://..." />
+
+          <div class="profile__meta">
+            <div><span>Total Points:</span> <strong id="profile-points">0</strong></div>
+            <div><span>Role:</span> <strong id="profile-role">user</strong></div>
+            <div><span>Joined:</span> <strong id="profile-created-at">-</strong></div>
+          </div>
+
+          <div class="profile__actions">
+            <button type="submit" id="profile-save-btn" class="btn btn-primary">Save Profile</button>
+            <button type="button" id="profile-logout-btn" class="btn btn-secondary">Logout</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="profile__card profile__card--small">
+        <h2>Security</h2>
+        <p>Change your password</p>
+        <form id="password-form" class="profile__form profile__form--compact">
+          <label class="profile__label" for="new-password">New Password</label>
+          <input
+            id="new-password"
+            class="profile__input"
+            type="password"
+            minlength="6"
+            required
+          />
+
+          <label class="profile__label" for="confirm-password">Confirm Password</label>
+          <input
+            id="confirm-password"
+            class="profile__input"
+            type="password"
+            minlength="6"
+            required
+          />
+
+          <button type="submit" id="profile-password-btn" class="btn btn-secondary">
+            Update Password
+          </button>
+        </form>
+      </section>
+    </main>
+
+    <script type="module" src="./profile.ts"></script>
+  </body>
+</html>

@@ -1,5 +1,6 @@
+import { initAppHeader } from "../lib/header.ts";
 import { supabase } from "../lib/supabaseClient.ts";
-import type { LeaderboardRow, ProfileSummary } from "../lib/supabaseTypes.ts";
+import type { LeaderboardRow } from "../lib/supabaseTypes.ts";
 import { hideSpinner, showSpinner } from "../lib/utils.ts";
 
 type LeaderboardEntry = {
@@ -9,9 +10,6 @@ type LeaderboardEntry = {
   avatar_url: string | null;
 };
 
-const userNameDisplay = document.getElementById("display-username") as HTMLElement;
-const userPointsDisplay = document.getElementById("display-points") as HTMLElement;
-const userAvatarDisplay = document.getElementById("display-avatar") as HTMLImageElement;
 const podiumContainer = document.getElementById("leaderboard-podium") as HTMLElement;
 const listContainer = document.getElementById("leaderboard-list") as HTMLElement;
 
@@ -119,30 +117,6 @@ function renderRemaining(entries: LeaderboardEntry[]): void {
   `;
 }
 
-async function loadUserProfile(): Promise<void> {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    window.location.href = "/auth/";
-    return;
-  }
-
-  const { data: profileData, error } = await supabase
-    .from("profiles")
-    .select("username, total_points, avatar_url")
-    .eq("id", user.id)
-    .single();
-
-  if (error || !profileData) return;
-
-  const profile: ProfileSummary = profileData;
-  userNameDisplay.textContent = profile.username ?? "User";
-  userPointsDisplay.innerHTML = `<p style='color: #2e3478'>Total Points: <label class="right__container--point">${profile.total_points}</label></p>`;
-  userAvatarDisplay.src = profile.avatar_url ?? "";
-}
-
 async function loadLeaderboard(): Promise<void> {
   const { data, error } = await supabase.from("leaderboard").select("*");
 
@@ -165,10 +139,12 @@ async function loadLeaderboard(): Promise<void> {
 
 async function initLeaderboardPage(): Promise<void> {
   showSpinner();
-  userNameDisplay.textContent = "Loading...";
-  userPointsDisplay.textContent = "Loading...";
+  const { user } = await initAppHeader({ requireAuth: true });
+  if (!user) {
+    hideSpinner();
+    return;
+  }
 
-  await loadUserProfile();
   await loadLeaderboard();
   hideSpinner();
 }
