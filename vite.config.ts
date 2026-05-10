@@ -19,6 +19,7 @@ export default defineConfig({
         leaderboard: resolve(__dirname, "src/leaderboard/index.html"),
         profile: resolve(__dirname, "src/profile/index.html"),
         history: resolve(__dirname, "src/history/index.html"),
+        historyAttempt: resolve(__dirname, "src/history-attempt/index.html"),
         results: resolve(__dirname, "src/results/index.html"),
       },
     },

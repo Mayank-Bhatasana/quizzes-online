@@ -19,7 +19,29 @@
         <p>Your past quiz attempts, scores, and progress.</p>
       </section>
 
+      <section class="history__controls">
+        <label class="history__control">
+          <span>Sort by</span>
+          <select id="history-sort-field">
+            <option value="created_at">Date</option>
+            <option value="score">Score</option>
+            <option value="accuracy">Accuracy</option>
+            <option value="difficulty">Difficulty</option>
+            <option value="subject">Subject</option>
+            <option value="time_taken_seconds">Time</option>
+          </select>
+        </label>
+        <label class="history__control">
+          <span>Order</span>
+          <select id="history-sort-order">
+            <option value="desc">Descending</option>
+            <option value="asc">Ascending</option>
+          </select>
+        </label>
+      </section>
+
       <section id="history-list" class="history__list"></section>
+      <nav id="history-pagination" class="history__pagination" aria-label="History pagination"></nav>
     </main>
 
     <script type="module" src="./history.ts"></script>

@@ -337,6 +337,20 @@ export type Database = {
               total_questions: number
             }[]
           }
+      get_attempt_review: {
+        Args: { p_attempt_id: number }
+        Returns: {
+          correct_option_id: number
+          correct_option_text: string
+          is_correct: boolean
+          options: Json
+          question_id: number
+          question_text: string
+          selected_option_id: number
+          selected_option_text: string
+          user_answer_id: number
+        }[]
+      }
       get_quiz_data: {
         Args: { quiz_difficulty_id: number; quiz_subject_id: number }
         Returns: {

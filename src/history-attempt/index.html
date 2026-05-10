@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attempt Review</title>
+    <link rel="stylesheet" href="../scss/main.scss" />
+    <link rel="icon" type="image/png" href="../assets/img/logo.svg" />
+  </head>
+  <body class="attempt-page">
+    <div id="spinner-overlay" class="spinner-overlay"></div>
+    <div id="spinner" class="spinner"></div>
+
+    <div id="app-header"></div>
+
+    <main class="attempt">
+      <header class="attempt__hero">
+        <h1>📝 Attempt Review</h1>
+        <p>Check your selected answers and the correct options.</p>
+      </header>
+
+      <section class="attempt__controls">
+        <label class="attempt__toggle">
+          <span>Show</span>
+          <select id="attempt-filter">
+            <option value="all">All Questions</option>
+            <option value="wrong">Wrong Only</option>
+          </select>
+        </label>
+      </section>
+
+      <section id="attempt-summary" class="attempt__summary"></section>
+      <section id="attempt-list" class="attempt__list"></section>
+    </main>
+
+    <script type="module" src="./attempt.ts"></script>
+  </body>
+</html>

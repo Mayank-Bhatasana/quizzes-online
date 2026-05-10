@@ -31,6 +31,65 @@
     gap: 1.2rem;
   }
 
+  &__controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  &__control {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.3rem;
+    color: #374151;
+
+    select {
+      height: 3.2rem;
+      border: 1px solid #c7d2fe;
+      border-radius: 0.7rem;
+      padding: 0 0.8rem;
+      background: #fff;
+      color: #111827;
+      font-size: 1.3rem;
+    }
+  }
+
+  &__pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+  }
+
+  &__page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 0.7rem;
+    border: 1px solid #c7d2fe;
+    background: #fff;
+    color: #4338ca;
+    cursor: pointer;
+    font-weight: 600;
+
+    &.is-active {
+      background: #4f46e5;
+      border-color: #4f46e5;
+      color: #fff;
+    }
+  }
+
+  &__pagination-ellipsis {
+    color: #6b7280;
+    font-size: 1.6rem;
+    padding: 0 0.2rem;
+  }
+
   &__empty {
     background: #fff;
     border-radius: 1rem;
@@ -48,6 +107,33 @@
   border-radius: 1.2rem;
   box-shadow: 0 10px 20px rgba(79, 70, 229, 0.08);
   padding: 1.4rem 1.6rem;
+
+  &--clickable {
+    cursor: pointer;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 24px rgba(79, 70, 229, 0.14);
+    }
+  }
+
+  &--good {
+    background: #ecfdf5;
+    border-color: #86efac;
+  }
+
+  &--mid {
+    background: #fffbeb;
+    border-color: #fde68a;
+  }
+
+  &--low {
+    background: #fef2f2;
+    border-color: #fca5a5;
+  }
 
   &__header {
     display: flex;
@@ -104,9 +190,35 @@
     font-size: 1.25rem;
     color: #6b7280;
   }
+
+  &__accuracy {
+    &--good {
+      color: #059669;
+    }
+
+    &--mid {
+      color: #d97706;
+    }
+
+    &--low {
+      color: #dc2626;
+    }
+  }
+
 }
 
 @media (max-width: 768px) {
+  .history {
+    &__controls {
+      justify-content: flex-start;
+    }
+
+    &__control {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
   .history-card {
     &__header {
       flex-direction: column;
