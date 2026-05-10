@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="../scss/main.scss" />
+    <link rel="icon" type="image/png" href="../assets/img/logo.svg" />
+  </head>
+  <body class="leaderboard-page">
+    <div id="spinner-overlay" class="spinner-overlay"></div>
+    <div id="spinner" class="spinner"></div>
+
+    <header class="home__header">
+      <nav class="home__header__nav">
+        <div class="logo">
+          <a class="logo__link" href="/">
+            <img src="../assets/img/logo.svg" alt="DevQuiz logo" />
+          </a>
+        </div>
+        <div class="home__header__nav__container">
+          <ul class="right__container">
+            <li id="display-username" class="right__container--username">USERNAME</li>
+            <li id="display-points" class="right__container--points">TOTAL_POINTS</li>
+            <li class="right__container--pfp">
+              <img id="display-avatar" />
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main class="leaderboard">
+      <section class="leaderboard__hero">
+        <h1>🏆 Leaderboard</h1>
+        <p>Top 10 users with the highest points</p>
+        <a class="btn btn-secondary" href="/dashboard/">Back to Dashboard</a>
+      </section>
+
+      <section id="leaderboard-podium" class="leaderboard__podium"></section>
+      <section id="leaderboard-list" class="leaderboard__list"></section>
+    </main>
+
+    <script type="module" src="./leaderboard.ts"></script>
+  </body>
+</html>

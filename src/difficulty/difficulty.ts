@@ -1,10 +1,16 @@
 import { supabase } from "../lib/supabaseClient.ts";
+import type {
+  DifficultyRow,
+  ProfileSummary,
+  SubjectSummary,
+} from "../lib/supabaseTypes.ts";
 import { showSpinner, hideSpinner } from "../lib/utils.ts";
 
 const urlParams = new URLSearchParams(window.location.search);
-const subjectId = urlParams.get("id");
+const subjectIdParam = urlParams.get("id");
+const subjectId = subjectIdParam ? Number(subjectIdParam) : NaN;
 
-if (!subjectId) {
+if (Number.isNaN(subjectId)) {
   // Redirect back to dashboard if no ID is found
   window.location.href = "/dashboard/";
 }
@@ -47,7 +53,7 @@ const loadUserProfile = async function () {
   }
 
   // Get the user's name, total points, avatar_url
-  const { data: profile, error } = await supabase
+  const { data: profileData, error } = await supabase
     .from("profiles")
     .select("username, total_points, avatar_url")
     .eq("id", user?.id)
@@ -59,21 +65,28 @@ const loadUserProfile = async function () {
     hideSpinner();
     return;
   }
-  userNameDisplay.innerHTML = profile.username; //#818cf8
+  if (!profileData) {
+    hideSpinner();
+    return;
+  }
+  const profile: ProfileSummary = profileData;
+
+  userNameDisplay.textContent = profile.username ?? "User"; //#818cf8
   userPointsDisplay.innerHTML = `<p style='color: #2e3478'>Total Points <label style="color: var(--success); font-size: 2rem;">${profile.total_points}</label></p>`;
-  userAvatarDisplay.src = profile.avatar_url;
+  userAvatarDisplay.src = profile.avatar_url ?? "";
 
   // get the subject name
   const subNameTag = document.getElementById("subject-name") as HTMLElement;
-  const { data: subName } = await supabase
+  const { data: subNameData } = await supabase
     .from("subjects")
     .select("name, image_url")
     .eq("id", subjectId);
 
-  if (subName) {
+  if (subNameData) {
+    const subName: SubjectSummary[] = subNameData;
     subNameTag.innerHTML = `
         <div style="display: flex; justify-content: center; align-items: center">
-            <img src="${subName[0].image_url}" style="width: 5rem" alt=""/>${subName[0].name}
+          <img src="${subName[0].image_url}" style="width: 5rem" alt=""/>${subName[0].name}
         </div>`;
   }
 
@@ -82,15 +95,14 @@ const loadUserProfile = async function () {
     ".difficulty__container",
   ) as HTMLElement;
 
-  const getDifficulty = await supabase
+  const { data: difficultiesData } = await supabase
     .from("difficulties")
     .select("*")
     .order("sort_order");
 
-  console.log(getDifficulty.data);
-
-  // @ts-ignore
-  diffContainer.innerHTML = getDifficulty.data
+  const difficulties: DifficultyRow[] = difficultiesData ?? [];
+  diffContainer.innerHTML =
+    difficulties
     ?.map(
       (diff) =>
         `
@@ -106,7 +118,7 @@ const loadUserProfile = async function () {
         </button>
       `,
     )
-    .join("");
+    .join("") ?? "";
 
   // user selects the difficulty
   diffContainer.addEventListener("click", (e) => {

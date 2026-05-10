@@ -1,4 +1,5 @@
 import { supabase } from "../lib/supabaseClient";
+import type { ProfileRow } from "../lib/supabaseTypes";
 // import "../scss/main.scss";
 
 // 1. Select the Form
@@ -112,7 +113,9 @@ if (registerForm) {
       }
 
       // 3. Update UI based on result
-      if (data) {
+      const existingUser: UsernameLookup | null = data;
+
+      if (existingUser) {
         // Data found = Username is TAKEN
         usernameStatus.innerText = "❌ Taken";
         usernameStatus.className = "status-text error";
@@ -276,3 +279,4 @@ if (loginForm) {
     }
   });
 }
+type UsernameLookup = Pick<ProfileRow, "username">;

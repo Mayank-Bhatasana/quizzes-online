@@ -1,4 +1,5 @@
 import { supabase } from "./lib/supabaseClient.ts";
+import type { ProfileSummary } from "./lib/supabaseTypes.ts";
 
 //Select the input
 const userNameDisplay = document.getElementById(
@@ -35,12 +36,15 @@ const handleDropdownClick = function (e: Event) {
     console.log("Selected item:", listItem);
     // Perform actions based on which item was clicked
     dropdownContainer.classList.add("hidden"); // Close after selection
+    if (listItem.id === "leaderboard") {
+      window.location.href = "/leaderboard/";
+      return;
+    }
     if (listItem.id === "logout") {
-      const logOutUser = async () => {
+      void (async () => {
         await supabase.auth.signOut();
         window.location.reload();
-      };
-      logOutUser();
+      })();
     }
   }
 };
@@ -84,7 +88,7 @@ const loadUserProfile = async function () {
   getStarted.disabled = false;
   loginButton.classList.add("hidden");
   // Get the user's name, total points, avatar_url
-  const { data: profile, error } = await supabase
+  const { data: profileData, error } = await supabase
     .from("profiles")
     .select("username, total_points, avatar_url")
     .eq("id", user?.id)
@@ -95,9 +99,12 @@ const loadUserProfile = async function () {
     console.log(error);
     return;
   }
-  userNameDisplay.innerHTML = profile.username; //#818cf8
+  if (!profileData) return;
+  const profile: ProfileSummary = profileData;
+
+  userNameDisplay.textContent = profile.username ?? "User"; //#818cf8
   userPointsDisplay.innerHTML = `<p style='color: #2e3478'>Total Points: <label class="right__container--point" ">${profile.total_points}</label></p>`;
-  userAvatarDisplay.src = profile.avatar_url;
+  userAvatarDisplay.src = profile.avatar_url ?? "";
 };
 
 loadUserProfile();

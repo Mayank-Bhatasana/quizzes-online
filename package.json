@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "update-types": "supabase gen types typescript --project-id cciiiwclqnouqzbjqscs > types/supabase.ts"
   },
   "devDependencies": {
     "sass": "^1.97.1",

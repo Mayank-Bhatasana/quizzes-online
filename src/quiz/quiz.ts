@@ -1,25 +1,14 @@
 import { supabase } from "../lib/supabaseClient.ts";
+import type {
+  CheckQuizAnswersResultRow,
+  GetQuizDataRow,
+} from "../lib/supabaseTypes.ts";
 import { showSpinner, hideSpinner } from "../lib/utils.ts";
-
-// Type Definitions
-type RawApiResponse = {
-  question_id: number;
-  question_text: string;
-  option_id: number;
-  option_text: string;
-};
 
 type Question = {
   id: number;
   text: string;
   options: { id: number; text: string }[];
-};
-
-type QuizResult = {
-  correct_count: number;
-  total_questions: number;
-  score: number;
-  attempt_id: number;
 };
 
 // State Management
@@ -31,10 +20,17 @@ let answers: Array<number | null> = [];
 
 // Quiz Configuration (store these for later submission)
 const urlParams = new URLSearchParams(window.location.search);
-
-const quizSubjectId = urlParams.get("id");
-const quizDifficultyId = urlParams.get("diffId");
+const quizSubjectIdParam = urlParams.get("id");
+const quizDifficultyIdParam = urlParams.get("diffId");
+const quizSubjectId = quizSubjectIdParam ? Number(quizSubjectIdParam) : NaN;
+const quizDifficultyId = quizDifficultyIdParam
+  ? Number(quizDifficultyIdParam)
+  : NaN;
 let quizStartTime: number;
+
+if (Number.isNaN(quizSubjectId) || Number.isNaN(quizDifficultyId)) {
+  window.location.href = "/dashboard/";
+}
 
 const QUIZ_TOTAL_TIME_SECONDS = 600; // 10 minutes
 const WARNING_TIME = 30; // Warning for the last 30 seconds of the quiz
@@ -47,7 +43,7 @@ const progressBar = document.getElementById("progressBar") as HTMLDivElement;
 const headerPill = document.querySelector(".header .pill") as HTMLDivElement;
 
 // Data Transformation
-function transformQuizData(rawData: RawApiResponse[]): Question[] {
+function transformQuizData(rawData: GetQuizDataRow[]): Question[] {
   const map = new Map<number, Question>();
 
   rawData.forEach((item) => {
@@ -85,7 +81,7 @@ async function initQuiz() {
     return;
   }
 
-  questions = transformQuizData(data as RawApiResponse[]);
+  questions = transformQuizData(data);
   answers = Array(questions.length).fill(null);
 
   renderQuestion();
@@ -142,7 +138,7 @@ function getPerformanceMessage(accuracy: number): string {
   return "Good attempt. Review and come back even stronger.";
 }
 
-function isQuizResult(value: unknown): value is QuizResult {
+function isQuizResult(value: unknown): value is CheckQuizAnswersResultRow {
   if (!value || typeof value !== "object") return false;
   const candidate = value as Record<string, unknown>;
   return (
@@ -339,7 +335,9 @@ async function showResults() {
   }
 }
 
-async function sendAnswersToServer(ans: Array<number | null>): Promise<QuizResult> {
+async function sendAnswersToServer(
+  ans: Array<number | null>,
+): Promise<CheckQuizAnswersResultRow> {
   // Filter out null/undefined answers
   const validAnswers = ans.filter((id): id is number => id !== null);
 
