@@ -9,6 +9,7 @@ export type ProfileUpdate = Database["public"]["Tables"]["profiles"]["Update"];
 export type SubjectRow = Database["public"]["Tables"]["subjects"]["Row"];
 export type SubjectSummary = Pick<SubjectRow, "name" | "image_url">;
 export type DifficultyRow = Database["public"]["Tables"]["difficulties"]["Row"];
+export type QuizAttemptRow = Database["public"]["Tables"]["quiz_attempts"]["Row"];
 export type LeaderboardRow = Database["public"]["Views"]["leaderboard"]["Row"];
 
 export type GetQuizDataRow =

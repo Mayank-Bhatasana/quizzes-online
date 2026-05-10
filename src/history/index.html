@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz History</title>
+    <link rel="stylesheet" href="../scss/main.scss" />
+    <link rel="icon" type="image/png" href="../assets/img/logo.svg" />
+  </head>
+  <body class="history-page">
+    <div id="spinner-overlay" class="spinner-overlay"></div>
+    <div id="spinner" class="spinner"></div>
+
+    <div id="app-header"></div>
+
+    <main class="history">
+      <section class="history__hero">
+        <h1>📜 My Quiz History</h1>
+        <p>Your past quiz attempts, scores, and progress.</p>
+      </section>
+
+      <section id="history-list" class="history__list"></section>
+    </main>
+
+    <script type="module" src="./history.ts"></script>
+  </body>
+</html>

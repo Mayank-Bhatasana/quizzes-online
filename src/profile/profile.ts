@@ -1,3 +1,4 @@
+import logoUrl from "../assets/img/logo.svg";
 import { initAppHeader, setHeaderProfile } from "../lib/header.ts";
 import { supabase } from "../lib/supabaseClient.ts";
 import type {
@@ -13,7 +14,12 @@ const messageBox = document.getElementById("profile-message") as HTMLElement;
 
 const emailInput = document.getElementById("profile-email") as HTMLInputElement;
 const usernameInput = document.getElementById("profile-username") as HTMLInputElement;
-const avatarInput = document.getElementById("profile-avatar") as HTMLInputElement;
+const avatarPreview = document.getElementById(
+  "profile-avatar-preview",
+) as HTMLImageElement;
+const avatarGallery = document.getElementById(
+  "profile-avatar-gallery",
+) as HTMLDivElement;
 const pointsDisplay = document.getElementById("profile-points") as HTMLElement;
 const roleDisplay = document.getElementById("profile-role") as HTMLElement;
 const createdAtDisplay = document.getElementById("profile-created-at") as HTMLElement;
@@ -26,6 +32,9 @@ const confirmPasswordInput = document.getElementById(
 ) as HTMLInputElement;
 
 let currentUserId = "";
+let selectedAvatarUrl: string | null = null;
+
+const AVATAR_BUCKET = "defaults";
 
 function showMessage(text: string, variant: "success" | "error"): void {
   messageBox.classList.remove("hidden");
@@ -39,10 +48,78 @@ function formatDate(isoDate: string): string {
   return date.toLocaleDateString();
 }
 
+function getFileExtension(fileName: string): string {
+  const parts = fileName.split(".");
+  if (parts.length < 2) return "jpg";
+  return parts[parts.length - 1].toLowerCase();
+}
+
+function setAvatarPreview(url: string | null): void {
+  avatarPreview.src = url ?? logoUrl;
+}
+
+function markSelectedAvatar(url: string | null): void {
+  selectedAvatarUrl = url;
+  setAvatarPreview(selectedAvatarUrl);
+
+  const options = avatarGallery.querySelectorAll<HTMLElement>(".profile__avatar-option");
+  options.forEach((option) => {
+    const isActive = option.dataset.url === (selectedAvatarUrl ?? "");
+    option.classList.toggle("is-selected", isActive);
+  });
+}
+
+function renderAvatarGallery(avatarUrls: string[]): void {
+  if (avatarUrls.length === 0) {
+    avatarGallery.innerHTML =
+      '<p class="profile__avatar-gallery-empty">No avatars found in storage yet.</p>';
+    return;
+  }
+
+  avatarGallery.innerHTML = avatarUrls
+    .map(
+      (url) => `
+      <button type="button" class="profile__avatar-option" data-url="${url}">
+        <img src="${url}" alt="Avatar option" />
+      </button>
+    `,
+    )
+    .join("");
+
+  markSelectedAvatar(selectedAvatarUrl);
+}
+
+async function loadAvatarGallery(): Promise<void> {
+  const { data, error } = await supabase.storage
+    .from(AVATAR_BUCKET)
+    .list("", {
+      limit: 100,
+      sortBy: { column: "name", order: "asc" },
+    });
+
+  if (error) {
+    avatarGallery.innerHTML =
+      '<p class="profile__avatar-gallery-empty">Could not load avatar library.</p>';
+    return;
+  }
+
+  const avatarUrls = (data ?? [])
+    .filter((file) => {
+      const extension = getFileExtension(file.name);
+      return ["jpg", "jpeg", "png", "webp"].includes(extension);
+    })
+    .map((file) => {
+      return supabase.storage.from(AVATAR_BUCKET).getPublicUrl(file.name).data.publicUrl;
+    });
+
+  renderAvatarGallery(avatarUrls);
+}
+
 function fillProfileForm(profile: ProfileRow, email: string): void {
   emailInput.value = email;
   usernameInput.value = profile.username ?? "";
-  avatarInput.value = profile.avatar_url ?? "";
+  selectedAvatarUrl = profile.avatar_url;
+  setAvatarPreview(selectedAvatarUrl);
   pointsDisplay.textContent = String(profile.total_points);
   roleDisplay.textContent = profile.role;
   createdAtDisplay.textContent = formatDate(profile.created_at);
@@ -83,7 +160,6 @@ async function handleProfileSave(event: SubmitEvent): Promise<void> {
   messageBox.classList.add("hidden");
 
   const nextUsername = usernameInput.value.trim();
-  const nextAvatar = avatarInput.value.trim();
 
   if (nextUsername.length < 3) {
     showMessage("Username must be at least 3 characters.", "error");
@@ -107,7 +183,7 @@ async function handleProfileSave(event: SubmitEvent): Promise<void> {
 
   const updatePayload: ProfileUpdate = {
     username: nextUsername,
-    avatar_url: nextAvatar.length > 0 ? nextAvatar : null,
+    avatar_url: selectedAvatarUrl,
     updated_at: new Date().toISOString(),
   };
 
@@ -181,6 +257,7 @@ async function initProfilePage(): Promise<void> {
   if (profile) {
     fillProfileForm(profile, user.email ?? "");
   }
+  await loadAvatarGallery();
 
   hideSpinner();
 }
@@ -191,6 +268,15 @@ profileForm.addEventListener("submit", (event) => {
 
 passwordForm.addEventListener("submit", (event) => {
   void handlePasswordSave(event);
+});
+
+avatarGallery.addEventListener("click", (event) => {
+  const target = event.target as HTMLElement;
+  const option = target.closest(".profile__avatar-option") as HTMLButtonElement | null;
+  if (!option) return;
+
+  const url = option.dataset.url ?? null;
+  markSelectedAvatar(url);
 });
 
 logoutBtn.addEventListener("click", () => {

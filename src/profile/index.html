@@ -36,8 +36,20 @@
             required
           />
 
-          <label class="profile__label" for="profile-avatar">Avatar URL</label>
-          <input id="profile-avatar" class="profile__input" type="url" placeholder="https://..." />
+          <label class="profile__label">Profile Picture</label>
+          <section class="profile__avatar-picker">
+            <div class="profile__avatar-preview-wrap">
+              <img id="profile-avatar-preview" class="profile__avatar-preview" alt="Current profile avatar" />
+            </div>
+            <div class="profile__avatar-controls">
+              <p class="profile__avatar-hint">
+                Choose one of the default avatars below.
+              </p>
+            </div>
+          </section>
+          <div id="profile-avatar-gallery" class="profile__avatar-gallery">
+            <p class="profile__avatar-gallery-empty">Loading avatars...</p>
+          </div>
 
           <div class="profile__meta">
             <div><span>Total Points:</span> <strong id="profile-points">0</strong></div>

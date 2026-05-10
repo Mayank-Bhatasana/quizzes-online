@@ -18,6 +18,7 @@ export default defineConfig({
         quiz: resolve(__dirname, "src/quiz/index.html"),
         leaderboard: resolve(__dirname, "src/leaderboard/index.html"),
         profile: resolve(__dirname, "src/profile/index.html"),
+        history: resolve(__dirname, "src/history/index.html"),
         results: resolve(__dirname, "src/results/index.html"),
       },
     },

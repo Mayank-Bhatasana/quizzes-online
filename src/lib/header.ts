@@ -28,7 +28,15 @@ function headerTemplate(): string {
             <li id="display-username" class="right__container--username">USERNAME</li>
             <li id="display-points" class="right__container--points">TOTAL_POINTS</li>
             <li class="right__container--pfp">
-              <img id="display-avatar" alt="User avatar" />
+              <button
+                id="pfp-trigger"
+                class="right__container--pfp-trigger"
+                type="button"
+                aria-haspopup="menu"
+                aria-expanded="false"
+              >
+                <img id="display-avatar" alt="User avatar" />
+              </button>
               <div class="right__container--pfp--dropdown">
                 <ul id="dropdown__container" class="dropdown__container hidden">
                   <li class="dropdown__container--list" data-nav-target="profile">
@@ -38,7 +46,7 @@ function headerTemplate(): string {
                     <a href="/leaderboard/">🏆 Leaderboard</a>
                   </li>
                   <li class="dropdown__container--list" data-nav-target="history">
-                    <a href="#">📜 History</a>
+                    <a href="/history/">📜 History</a>
                   </li>
                   <li class="dropdown__container--list" data-nav-target="logout">
                     ➜] Logout
@@ -75,14 +83,18 @@ function updateHeaderProfile(profile: ProfileSummary | null): void {
 }
 
 function wireDropdownHandlers(): void {
-  const pfp = document.querySelector(".right__container--pfp img") as HTMLImageElement | null;
+  const pfpTrigger = document.getElementById("pfp-trigger") as HTMLButtonElement | null;
   const dropdownContainer = document.getElementById("dropdown__container");
 
-  if (!pfp || !dropdownContainer) return;
+  if (!pfpTrigger || !dropdownContainer) return;
 
-  pfp.addEventListener("click", (event) => {
+  pfpTrigger.addEventListener("click", (event) => {
     event.stopPropagation();
     dropdownContainer.classList.toggle("hidden");
+    pfpTrigger.setAttribute(
+      "aria-expanded",
+      String(!dropdownContainer.classList.contains("hidden")),
+    );
   });
 
   dropdownContainer.addEventListener("click", (event) => {
@@ -91,6 +103,7 @@ function wireDropdownHandlers(): void {
     if (!listItem) return;
 
     dropdownContainer.classList.add("hidden");
+    pfpTrigger.setAttribute("aria-expanded", "false");
     const action = listItem.getAttribute("data-nav-target");
 
     if (action === "logout") {
@@ -108,12 +121,21 @@ function wireDropdownHandlers(): void {
 
     if (action === "leaderboard") {
       window.location.href = "/leaderboard/";
+      return;
+    }
+
+    if (action === "history") {
+      window.location.href = "/history/";
     }
   });
 
   window.addEventListener("click", (event) => {
-    if (!dropdownContainer.contains(event.target as Node) && event.target !== pfp) {
+    if (
+      !dropdownContainer.contains(event.target as Node) &&
+      !pfpTrigger.contains(event.target as Node)
+    ) {
       dropdownContainer.classList.add("hidden");
+      pfpTrigger.setAttribute("aria-expanded", "false");
     }
   });
 }
