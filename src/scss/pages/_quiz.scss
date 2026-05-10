@@ -253,6 +253,32 @@ button {
   @media (max-width: 640px) {
     padding: 24px 16px;
   }
+
+  &--great {
+    background:
+      radial-gradient(circle at 18% 16%, rgba(16, 185, 129, 0.2), transparent 44%),
+      radial-gradient(circle at 88% 88%, rgba(79, 70, 229, 0.12), transparent 48%),
+      linear-gradient(180deg, #ffffff 0%, #f3fffb 100%);
+  }
+
+  &--good {
+    background:
+      radial-gradient(circle at 20% 20%, rgba(79, 70, 229, 0.16), transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(16, 185, 129, 0.14), transparent 44%),
+      linear-gradient(180deg, #ffffff 0%, #f9faff 100%);
+  }
+
+  &--okay {
+    background:
+      radial-gradient(circle at 15% 16%, rgba(245, 158, 11, 0.2), transparent 42%),
+      linear-gradient(180deg, #ffffff 0%, #fffaf0 100%);
+  }
+
+  &--low {
+    background:
+      radial-gradient(circle at 15% 20%, rgba(239, 68, 68, 0.15), transparent 40%),
+      linear-gradient(180deg, #fff, #fff7f7 100%);
+  }
 }
 
 .result-card__hero {
@@ -275,6 +301,45 @@ button {
   font-size: 1.3rem;
   font-weight: 700;
   padding-inline: 14px;
+}
+
+.result-highlight {
+  margin: 18px auto 4px;
+  max-width: 420px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+
+  @media (max-width: 480px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.result-highlight__score,
+.result-highlight__accuracy {
+  border: 1px solid rgba(79, 70, 229, 0.14);
+  border-radius: 12px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.86);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  strong {
+    font-size: 2.4rem;
+    line-height: 1;
+    color: #1f2937;
+  }
+}
+
+.result-highlight__accuracy strong {
+  color: var(--primary-hover);
+}
+
+.result-highlight__label {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  font-weight: 600;
 }
 
 .score-orb {
@@ -381,7 +446,7 @@ button {
   }
 
   button {
-    min-width: 140px;
+    min-width: 132px;
   }
 }
 

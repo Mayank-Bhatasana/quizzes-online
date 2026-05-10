@@ -138,6 +138,15 @@ function getPerformanceMessage(accuracy: number): string {
   return "Good attempt. Review and come back even stronger.";
 }
 
+function getResultTier(
+  accuracy: number,
+): { key: "great" | "good" | "okay" | "low"; label: string } {
+  if (accuracy >= 90) return { key: "great", label: "Outstanding" };
+  if (accuracy >= 75) return { key: "good", label: "Strong Performance" };
+  if (accuracy >= 50) return { key: "okay", label: "Good Attempt" };
+  return { key: "low", label: "Keep Practicing" };
+}
+
 function isQuizResult(value: unknown): value is CheckQuizAnswersResultRow {
   if (!value || typeof value !== "object") return false;
   const candidate = value as Record<string, unknown>;
@@ -257,16 +266,28 @@ async function showResults() {
         ? Math.round((result.correct_count / result.total_questions) * 100)
         : 0;
     const performanceMessage = getPerformanceMessage(accuracy);
+    const resultTier = getResultTier(accuracy);
 
     container.innerHTML = `
-      <section class="result-card" style="--result-progress: ${accuracy}%;" aria-live="polite">
+      <section class="result-card result-card--${resultTier.key}" style="--result-progress: ${accuracy}%;" aria-live="polite">
         <div class="result-card__hero">
-          <div class="pill result-pill">Quiz Complete! 🎉</div>
+          <div class="pill result-pill">${resultTier.label}</div>
           <h2>Great job finishing the challenge</h2>
           <p class="result-card__message">${performanceMessage}</p>
         </div>
 
-        <div class="score-orb">
+        <div class="result-highlight">
+          <div class="result-highlight__score">
+            <span class="result-highlight__label">Final Score</span>
+            <strong>${result.score}</strong>
+          </div>
+          <div class="result-highlight__accuracy">
+            <span class="result-highlight__label">Accuracy</span>
+            <strong>${accuracy}%</strong>
+          </div>
+        </div>
+
+        <div class="score-orb" aria-hidden="true">
           <div class="score-orb__inner">
             <div class="score-orb__value">${result.correct_count}<span>/${result.total_questions}</span></div>
             <div class="score-orb__label">Correct Answers</div>
@@ -293,14 +314,26 @@ async function showResults() {
         </div>
 
         <div class="result-actions">
+          <button class="btn-secondary" id="reviewAttemptBtn">Review Answers</button>
           <button class="btn-secondary" id="retryBtn">Try Again</button>
+          <button class="btn-secondary" id="leaderboardBtn">Leaderboard</button>
           <button class="btn-primary" id="homeBtn">Home Page</button>
         </div>
       </section>
     `;
 
+    document
+      .getElementById("reviewAttemptBtn")
+      ?.addEventListener("click", () => {
+        window.location.href = `/history-attempt/?id=${result.attempt_id}`;
+      });
+
     document.getElementById("retryBtn")?.addEventListener("click", () => {
       window.location.reload();
+    });
+
+    document.getElementById("leaderboardBtn")?.addEventListener("click", () => {
+      window.location.href = "/leaderboard/";
     });
 
     document.getElementById("homeBtn")?.addEventListener("click", () => {

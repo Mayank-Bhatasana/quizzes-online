@@ -129,8 +129,7 @@ async function loadAttemptReview(): Promise<void> {
   const { data, error } = await rpcClient.rpc("get_attempt_review", {
     p_attempt_id: attemptId,
   });
-
-  console.log(data)
+  
   if (error || !data) {
     attemptList.innerHTML =
       '<p class="attempt__empty">You don\'t have access ot this attempt. </p>';
